@@ -1,0 +1,29 @@
+{
+  "name": "scaffront-styles",
+  "description": "",
+  "main": "stylesheets/_scaffront-styles.scss",
+  "moduleType": [],
+  "keywords": [
+    "compass",
+    "sass",
+    "scss",
+    "helpers",
+    "snippets",
+    "scaffolding"
+  ],
+  "authors": [
+    "http://github.com/antixrist"
+  ],
+  "license": "WTFPL",
+  "homepage": "http://github.com/antixrist/scaffront-styles",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "compass-mixins": "~1.0.2"
+  }
+}
