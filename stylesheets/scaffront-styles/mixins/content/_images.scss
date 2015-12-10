@@ -1,7 +1,6 @@
 //*********************************************
 //    Framework/Mixins/Content/Images
 //*********************************************
-@import "compass/css3/background-size";
 
 @function sizes-factor ($sizes, $factor: 1) {
   $result: ();
