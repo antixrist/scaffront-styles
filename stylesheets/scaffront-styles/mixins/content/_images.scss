@@ -91,7 +91,7 @@ $background-size-behavior: '/js/vendor/backgroundsize.min.htc' !default;
     // здесь вроде ничего больше проверять не нужно
   }
 
-  @include background-size($sizes);
+  background-size: $sizes;
 
   @if (type-of($behavior) == string and $behavior != '') {
     .lt-ie9 & {

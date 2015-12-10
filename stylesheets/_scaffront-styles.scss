@@ -1,3 +1,8 @@
+@import '../../compass-mixins/lib/compass';
+@import '../../breakpoint-sass/stylesheets/breakpoint';
+@import '../../singularity/stylesheets/singularitygs';
+@import '../../sass-toolkit/stylesheets/toolkit';
+
 @import 'scaffront-styles/vars';
 @import 'scaffront-styles/mixins';
 @import 'scaffront-styles/scaffolding';
