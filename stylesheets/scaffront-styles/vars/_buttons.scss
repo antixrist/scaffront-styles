@@ -69,7 +69,7 @@ $btn-variants: (
 ) !default;
 
 .btn, %btn {
-  #{$actived} {
+  #{$is-active} {
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.4) inset;
   }
 }

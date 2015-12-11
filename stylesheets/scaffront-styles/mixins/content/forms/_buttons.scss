@@ -1,7 +1,17 @@
 //*********************************************
 //    Framework/Mixins/Content/Forms/Buttons
 //*********************************************
-@mixin btn () {
+
+$is-hovered: unquote('&:hover, &.is-hovered') !default;
+$is-focused: unquote('&:focus, &.is-focused') !default;
+$is-active: unquote('&:active, &.is-active') !default;
+$is-visited: unquote('&:visited, &.is-visited') !default;
+$is-required: unquote('&.is-required, &[required]') !default;
+$is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !default;
+$is-error: unquote('&.is-error') !default;
+$is-success: unquote('&.is-success') !default;
+
+@mixin sf-btn () {
   -webkit-appearance: none;
   display: inline-block;
   margin-bottom: 0;
@@ -28,25 +38,25 @@
   }
 
 //  #{$actived},
-  #{$focused} {
-    @include focus();
+  #{$is-focused} {
+    @include sf-focus();
 
-    #{$hovered} {
-      @include unfocus();
+    #{$is-hovered} {
+      @include sf-unfocus();
     }
   }
 
-  #{$hovered},
-  #{$focused} {
+  #{$is-hovered},
+  #{$is-focused} {
     text-decoration: none;
   }
 
-  #{$actived} {
+  #{$is-active} {
     outline: 0;
     background-image: none;
   }
 
-  #{$disabled} {
+  #{$is-disabled} {
     cursor: default;
     opacity: .65;
     box-shadow: none;
@@ -73,7 +83,7 @@ $btn-padding-horizontal: 65px !default;
 $btn-lines: 1 !default;
 $btn-active-offset: 1px !default;
 $btn-active-offset-type: inner !default; // inner|outer|none/false
-@mixin btn-size (
+@mixin sf-btn-size (
   $height: $btn-height,
   $font-size: $btn-font-size,
   $line-height: $btn-line-height,
@@ -108,7 +118,7 @@ $btn-active-offset-type: inner !default; // inner|outer|none/false
     $padding-horizontal: map-get($vertical-sizes, 'padding-horizontal')
   );
 
-  #{$actived} {
+  #{$is-active} {
     $active-type: unquote($active-offset-type);
 
     @if ($active-type == inner) {
@@ -122,7 +132,7 @@ $btn-active-offset-type: inner !default; // inner|outer|none/false
   }
 }
 
-@mixin btn-block {
+@mixin sf-btn--block () {
   display: block;
   width: 100%;
   white-space: normal;
@@ -141,7 +151,7 @@ $btn-color-border-hover: transparent !default;
 $btn-color-border-focus: transparent !default;
 $btn-color-border-active: transparent !default;
 $btn-border-radius: 4px !default;
-@mixin btn-variant(
+@mixin btn-variant (
   $color-normal: $btn-color-normal,
   $color-hover: $btn-color-hover,
   $color-focus: $btn-color-focus,
@@ -160,42 +170,42 @@ $btn-border-radius: 4px !default;
   border-color: $color-border-normal;
   border-radius: $border-radius;
 
-  @include control-background($color: $color-bg-normal, $direction: to bottom);
+  @include sf-control-background($color: $color-bg-normal, $direction: to bottom);
 
   &,
   & > * {
-    @include selection(
+    @include sf-selection(
       $color: $color-normal,
       $background: transparent
     );
   }
 
-  #{$focused} {
+  #{$is-focused} {
     color: $color-focus !important;
     border-color: $color-border-focus;
 
-    @include control-background($color: $color-bg-focus, $direction: to bottom);
+    @include sf-control-background($color: $color-bg-focus, $direction: to bottom);
 
     &,
     & > * {
-      @include selection(
+      @include sf-selection(
         $color: $color-focus,
         $background: transparent
       );
     }
   }
 
-  #{$hovered} {
+  #{$is-hovered} {
     &,
-    #{$focused} & {
+    #{$is-focused} & {
       color: $color-hover !important;
       border-color: $color-border-hover;
 
-      @include control-background($color: $color-bg-hover, $direction: to bottom);
+      @include sf-control-background($color: $color-bg-hover, $direction: to bottom);
 
       &,
       & > * {
-        @include selection(
+        @include sf-selection(
           $color: $color-hover,
           $background: transparent
         );
@@ -203,40 +213,40 @@ $btn-border-radius: 4px !default;
     }
   }
 
-  #{$actived} {
+  #{$is-active} {
     color: $color-active !important;
     border-color: $color-border-active;
 
     @if ($color-bg-hover == $color-bg-active) {
       // reverse
-      @include control-background($color: $color-bg-active, $direction: to top);
+      @include sf-control-background($color: $color-bg-active, $direction: to top);
     } @else {
-      @include control-background($color: $color-bg-active, $direction: to bottom);
+      @include sf-control-background($color: $color-bg-active, $direction: to bottom);
     }
 
     &,
     & > * {
-      @include selection(
+      @include sf-selection (
         $color: $color-active,
         $background: transparent
       );
     }
   }
 
-  #{$disabled} {
+  #{$is-disabled} {
     &,
-    #{$hovered},
-    #{$focused},
-    #{$actived} {
+    #{$is-hovered},
+    #{$is-focused},
+    #{$is-active} {
       color: $color-normal !important;
       border-color: $color-border-normal;
 
-      @include control-background($color: $color-bg-normal, $direction: to bottom);
+      @include sf-control-background($color: $color-bg-normal, $direction: to bottom);
     }
   }
 }
 
-@mixin btn-file {
+@mixin sf-btn--file {
   position: relative;
 
   input[type=file] {

@@ -2,45 +2,46 @@
 //    Framework/Mixins/Layout/Auto-columns Grid
 //*********************************************
 
-@mixin auto-colums-aside ($position, $gutter: 0, $gutter-style: 'margin') {
+@mixin sf-auto-columns-aside ($position, $gutter: 0, $gutter-style: 'margin') {
   $direction: unquote($position);
+  $gutter-style: unquote($gutter-style);
+
   float: $direction;
   #{$gutter-style}-#{opposite-position($direction)}: $gutter;
 }
 
-@mixin auto-colums-content () {
+@mixin sf-auto-columns-content () {
   overflow: hidden;
   display: block;
 }
 
-$auto-columns-gutter: 0 !default;
-$auto-columns-gutter-style: 'margin' !default;
-$auto-columns-selector-content: '' !default;
-$auto-columns-selector-aside-left: '' !default;
-$auto-columns-selector-aside-right: '' !default;
-@mixin auto-colums (
-  $gutter: $auto-columns-gutter,
-  $gutter-style: $auto-columns-gutter-style,
-  $selector-content: $auto-columns-selector-content,
-  $selector-aside-left: $auto-columns-selector-aside-left,
-  $selector-aside-right: $auto-columns-selector-aside-right
+@mixin sf-auto-columns (
+  $selector-content,
+  $selector-aside-left,
+  $selector-aside-right,
+  $gutter: 0,
+  $gutter-style: 'margin'
 ) {
-  @include clearfix;
+  @include sf-clearfix;
 
-  @if ($selector-content != '') {
+  $selector-content: unquote($selector-content);
+  $selector-aside-left: unquote($selector-aside-left);
+  $selector-aside-right: unquote($selector-aside-right);
+
+  @if ($selector-content) {
     & > #{$selector-content} {
-      @include auto-colums-content();
+      @include sf-auto-columns-content();
     }
   }
 
-  @if ($selector-aside-left != '') {
+  @if ($selector-aside-left) {
     & > #{$selector-aside-left} {
-      @include auto-colums-aside($position: left, $gutter: $gutter, $gutter-style: $gutter-style);
+      @include sf-auto-columns-aside($position: left, $gutter: $gutter, $gutter-style: $gutter-style);
     }
   }
-  @if ($selector-aside-right != '') {
+  @if ($selector-aside-right) {
     & > #{$selector-aside-right} {
-      @include auto-colums-aside($position: right, $gutter: $gutter, $gutter-style: $gutter-style);
+      @include sf-auto-columns-aside($position: right, $gutter: $gutter, $gutter-style: $gutter-style);
     }
   }
 }

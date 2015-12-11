@@ -143,11 +143,11 @@ b, strong {
 }
 
 a.logo, .logo a {
-  @include no-border($important: true);
+  @include sf-no-border($important: true);
 
   img {
     display: block;
-    @include no-border($important: true);
+    @include sf-no-border($important: true);
   }
 }
 

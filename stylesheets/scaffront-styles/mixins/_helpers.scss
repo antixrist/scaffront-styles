@@ -2,7 +2,7 @@
 //    Common
 //*********************************************
 
-@mixin e($names...) {
+@mixin e ($names...) {
   @if length($names) {
     @for $i from 1 through length($names) {
       @at-root &__#{nth($names, $i)} {
@@ -12,7 +12,7 @@
   }
 }
 
-@mixin m($names...) {
+@mixin m ($names...) {
   @if length($names) {
     @for $i from 1 through length($names) {
       @at-root &--#{nth($names, $i)} {
@@ -22,13 +22,13 @@
   }
 }
 
-@function trim ($string) {
+@function sf-trim ($string) {
   $result: $string;
   @if (type-of($string) == list) {
     $result: ();
     $separator: list-separator($string);
     @each $item in $string {
-      $result: append($result, trim($item), $separator);
+      $result: append($result, sf-trim($item), $separator);
     }
   } @elseif (type-of($string) == string) {
     @while (str-index($string, ' ') == 1) {
@@ -45,7 +45,7 @@
   @return $result;
 }
 
-@function implode($glue, $list) {
+@function sf-implode ($glue, $list) {
   $index: 0;
   $result: '';
   $glue: unquote($glue);
@@ -61,16 +61,16 @@
   @return $result;
 }
 
-@function explode($glue, $string, $separator: comma) {
+@function sf-explode($glue, $string, $separator: comma) {
   @if (type-of($string) != string) {
     $string: inspect($string);
-    @warn('[explode] Not a string! $string: "#{$string}"');
+    @warn('[sf-explode] Not a string! $string: "#{$string}"');
   }
   $string: unquote($string);
 
   @if (type-of($glue) != string) {
     $glue: inspect($glue);
-    @warn('[explode] Not a string! $glue: "#{$glue}"');
+    @warn('[sf-explode] Not a string! $glue: "#{$glue}"');
   }
   $glue: unquote($glue);
 
@@ -81,7 +81,7 @@
     $separator: space;
   } @elseif ($separator != auto and $separator != comma and $separator != space) {
     $separator: auto;
-    @warn('[explode] Unknown separator! $separator: "#{$separator}"');
+    @warn('[sf-explode] Unknown separator! $separator: "#{$separator}"');
   }
 
   $result: ();
@@ -101,40 +101,40 @@
   @return $result;
 }
 
-@function selector-without-placeholders ($selector) {
+@function sf-selector-without-placeholders($selector) {
   $list: sl-to-list($selector, ',');
   $result: ();
 
   @each $selector in $list {
-    $selector: trim($selector);
+    $selector: sf-trim($selector);
     @if (str-slice($selector, 1, 1) != '%') {
       $result: append($result, $selector, comma);
     }
   }
 
-  $result: implode(', ', $result);
+  $result: sf-implode(', ', $result);
   @return $result;
 }
 
-@function str-replace($string, $search, $replace: '') {
+@function sf-str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);
 
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    @return str-slice($string, 1, $index - 1) + $replace + sf-str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
   }
 
   @return $string;
 }
 
-@function join-pathes ($pathes...) {
-  $result: implode('/', $pathes);
-  $result: str_replace($result, '//', '/');
-  $result: str_replace($result, '//', '/');
+@function sf-join-pathes($pathes...) {
+  $result: sf-implode('/', $pathes);
+  $result: sf-str-replace($result, '//', '/');
+  $result: sf-str-replace($result, '//', '/');
 
   @return $result;
 }
 
-@function is-true ($input) {
+@function sf-is-true($input) {
   $result: false;
   @if ($input == true or $input == 1) {
     $result: true;
@@ -143,25 +143,21 @@
   @return $result;
 }
 
-//@include setComponent(table-cell) {
-//  padding:4px;
-//  margin:4px;
-//}
-//
-//td {
-//  @include getComponent(table-cell);
-//}
-//
-//th {
-//  @include getComponent(table-cell);
-//}
+@function sf-important ($important: false) {
+  $important: '';
+  @if (sf-is-true($important)) {
+    $imp: '!important';
+  }
 
-@mixin setComponent($placeholder) {
+  @return unquote($important);
+}
+
+@mixin sf-component-set ($placeholder) {
   %#{$placeholder} {
     @content;
   }
 }
 
-@mixin getComponent($placeholder) {
+@mixin sf-component-get ($placeholder) {
   @extend %#{$placeholder};
 }

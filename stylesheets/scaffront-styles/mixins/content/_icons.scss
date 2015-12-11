@@ -8,7 +8,7 @@ $compass-sprite-map-type: unquote('compass::sassextensions::sprites::spritemap')
 
 
 @function get-sprite-unique-key-from-path($path) {
-  $name: implode('', explode('/', $path));
+  $name: sf-implode('', sf-explode('/', $path));
   @return $name;
 }
 
@@ -129,23 +129,23 @@ $compass-sprite-map-type: unquote('compass::sassextensions::sprites::spritemap')
 
   $sprite-map: get-sprite-map($map);
   @if ($sprite-map != null) {
-    @if (is-true($name)) {
+    @if (sf-is-true($name)) {
       $result: map-merge($result, (name: sprite-map-name($sprite-map)));
     }
 
-    @if (is-true($names)) {
+    @if (sf-is-true($names)) {
       $result: map-merge($result, (names: sprite-names($sprite-map)));
     }
 
-    @if (is-true($url)) {
+    @if (sf-is-true($url)) {
       $result: map-merge($result, (url: sprite-url($sprite-map)));
     }
 
-    @if (is-true($path)) {
+    @if (sf-is-true($path)) {
       $result: map-merge($result, (path: sprite-path($sprite-map)));
     }
 
-    @if (is-true($sizes)) {
+    @if (sf-is-true($sizes)) {
       $result: map-merge($result, sizes-factor((
         width: sprite-width($sprite-map),
         height: sprite-height($sprite-map)
@@ -170,15 +170,15 @@ $compass-sprite-map-type: unquote('compass::sassextensions::sprites::spritemap')
   $sprite-map: get-sprite-map($map);
   @if ($sprite-map != null) {
 
-    @if (is-true($file)) {
+    @if (sf-is-true($file)) {
       $result: map-merge($result, (file: get-sprite-icon-file($sprite-map, $name)));
     }
 
-    @if (is-true($sizes)) {
+    @if (sf-is-true($sizes)) {
       $result: map-merge($result, get-sprite-icon-size($sprite-map, $name, $sizes-factor));
     }
 
-    @if (is-true($offset)) {
+    @if (sf-is-true($offset)) {
       $result: map-merge($result, (offset: get-sprite-icon-offset($sprite-map, $name)));
     }
   }

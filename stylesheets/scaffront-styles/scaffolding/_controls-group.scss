@@ -16,7 +16,7 @@
   }
 
   #{$controls-group} {
-    #{implode(', ', $items-selector)} {
+    #{sf-implode(', ', $items-selector)} {
       float: left;
       position: relative;
 
@@ -36,7 +36,7 @@
 
   $variants: ();
 
-  @each $selector in trim(sl-to-list($controls-group-items, ',')) {
+  @each $selector in sf-trim(sl-to-list($controls-group-items, ',')) {
     $variants: map-merge($variants, ($selector: $controls-group-items-offset));
   }
 
@@ -45,7 +45,7 @@
     $border-width: nth(map-get($btn-size, 'options'), 4);
     $offset: #{get-dimension(right, $border-width)};
 
-    @each $selector in trim(sl-to-list($selectors, ',')) {
+    @each $selector in sf-trim(sl-to-list($selectors, ',')) {
       $variants: map-merge($variants, ($selector: -$offset));
     }
   }
@@ -55,12 +55,12 @@
     $border-width: nth(map-get($input-size, 'options'), 4);
     $offset: #{get-dimension(right, $border-width)};
 
-    @each $selector in trim(sl-to-list($selectors, ',')) {
+    @each $selector in sf-trim(sl-to-list($selectors, ',')) {
       $variants: map-merge($variants, ($selector: -$offset));
     }
   }
 
-  $containers: trim(sl-to-list($controls-group, ','));
+  $containers: sf-trim(sl-to-list($controls-group, ','));
   @each $container in $containers {
     @each $variant, $offset in $variants {
       @each $variant2, $offset2 in $variants {

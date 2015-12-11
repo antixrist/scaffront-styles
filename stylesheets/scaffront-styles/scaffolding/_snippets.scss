@@ -4,7 +4,7 @@ $opacity-states-hover: 1 !default;
 $opacity-states-active: .5 !default;
 @if ($opacity-states != '' and $opacity-states != false) {
   #{$opacity-states} {
-    @include opacity-states (
+    @include sf-opacity-states (
       $normal: $opacity-states-normal,
       $hover: $opacity-states-hover,
       $active: $opacity-states-active
@@ -22,7 +22,7 @@ $preview-opacity-hover: 1 !default;
 $preview-opacity-active: 0.7 !default;
 @if ($preview != '' and $preview != false) {
   #{$preview} {
-    @include preview (
+    @include sf-preview (
       $image: $preview-image,
       $image-hidpi: $preview-image-hidpi,
       $image-inline: $preview-bg-inline,
@@ -41,7 +41,7 @@ $arrow-block-bg-color: #FAEA26 !default;
 $arrow-block-padding: 35px !default;
 @if ($arrow-block != '' and $arrow-block != false) {
   #{$arrow-block} {
-    @include arrow-block(
+    @include sf-arrow-block(
       $direction: $arrow-block-direction,
       $arrow-size: $arrow-block-arrow-size,
       $color: $arrow-block-bg-color,

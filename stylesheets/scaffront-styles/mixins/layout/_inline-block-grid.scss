@@ -3,7 +3,7 @@
 //*********************************************
 $base-font-size: 14px !default;
 
-@mixin ib-child ($width: auto, $font-size: $base-font-size) {
+@mixin sf-ib-child($width: auto, $font-size: $base-font-size) {
   font-size      : $font-size;
   letter-spacing : normal;
   line-height    : normal;
@@ -11,19 +11,15 @@ $base-font-size: 14px !default;
   display        : -moz-inline-stack;
   display        : inline-block;
 
-  width       : $width;
-  text-align  : left;
+  width          : $width;
+  text-align     : left;
 }
 
-$ib-full-width: false !default;
-$ib-child-selector: '*' !default;
-$ib-child-width: auto !default;
-$ib-font-size: $base-font-size !default;
-@mixin ib (
-  $full-width: $ib-full-width,
-  $child-selector: $ib-child-selector,
-  $child-width: $ib-child-width,
-  $font-size: $ib-font-size
+@mixin sf-ib (
+  $full-width: false,
+  $child-selector: '> *',
+  $child-width: auto,
+  $font-size: $base-font-size
 ) {
   list-style      : none;
   letter-spacing  : -1px;
@@ -33,7 +29,7 @@ $ib-font-size: $base-font-size !default;
   padding         : 0;
   margin          : 0;
 
-  @if ($full-width == true or $full-width == 1) {
+  @if (sf-is-true($full-width)) {
     font-size       : $font-size;
     text-align      : justify;
     text-justify    : newspaper;
@@ -44,7 +40,7 @@ $ib-font-size: $base-font-size !default;
 
     &:after {
       width      : 100%;
-      height     : 0px;
+      height     : 0;
       visibility : hidden;
       overflow   : hidden;
       content    : '';
@@ -52,11 +48,10 @@ $ib-font-size: $base-font-size !default;
     }
   }
 
-  @if ($child-selector != false and $child-selector != '') {
-    $child-selector: unquote($child-selector);
-
+  $child-selector: unquote($child-selector);
+  @if ($child-selector) {
     & > #{$child-selector} {
-      @include ib-child($child-width, $font-size);
+      @include sf-ib-child($child-width, $font-size);
     }
   }
 }

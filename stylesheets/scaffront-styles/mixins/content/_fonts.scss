@@ -62,7 +62,7 @@ $sf-fonts: ();
   @if ($font != null) {
     $stack: map-get($font, stack);
 
-    @if (is-true($to-string)) {
+    @if (sf-is-true($to-string)) {
       $stack: unquote('"#{sl-to-string($stack, '", "')}"');
     } @else {
       $stack: sl-to-list($stack);
@@ -76,7 +76,7 @@ $sf-fonts: ();
   $font: sf-get-font($name, $type);
 
   @if ($font != null) {
-    font-family: implode(', ', map-get($font, stack));
+    font-family: sf-implode(', ', map-get($font, stack));
     font-weight: map-get($font, weight);
     font-style: map-get($font, style);
   }

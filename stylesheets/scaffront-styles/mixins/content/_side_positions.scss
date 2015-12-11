@@ -2,7 +2,7 @@
 //    Framework/Mixins/Content/Side positions
 //*********************************************
 
-@mixin side-position-outer (
+@mixin sf-side-position-outer (
   $position,
   $width: 0,
   $height: 0,
@@ -76,7 +76,7 @@
   }
 }
 
-@mixin side-position-inner (
+@mixin sf-side-position-inner (
   $position,
   $width: 0,
   $height: 0,

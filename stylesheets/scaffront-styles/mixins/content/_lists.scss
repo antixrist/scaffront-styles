@@ -1,10 +1,15 @@
-@mixin unlist {
+//*********************************************
+//    Framework/Mixins/Content/Lists
+//*********************************************
+
+@mixin unlist () {
   list-style: none;
   margin: 0;
   padding: 0;
   background: none;
 }
-@mixin unlist-item {
+
+@mixin unlist-item () {
   list-style: none;
   margin: 0;
   padding: 0;

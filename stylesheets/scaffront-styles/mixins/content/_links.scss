@@ -2,6 +2,15 @@
 //    Framework/Mixins/Content/Links
 //*********************************************
 
+$is-hovered: unquote('&:hover, &.is-hovered') !default;
+$is-focused: unquote('&:focus, &.is-focused') !default;
+$is-active: unquote('&:active, &.is-active') !default;
+$is-visited: unquote('&:visited, &.is-visited') !default;
+$is-required: unquote('&.is-required, &[required]') !default;
+$is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !default;
+$is-error: unquote('&.is-error') !default;
+$is-success: unquote('&.is-success') !default;
+
 @mixin link (
   $color-normal,
   $color-hover: null,
@@ -82,41 +91,42 @@
 
 
   @include link-colors($color-normal, $color-hover, $color-active, $color-visited, $color-focus);
+
   border-color: $border-color-normal;
   border-width: $border-width-normal;
 
-  #{$visited} {
+  #{$is-visited} {
     color: $color-visited;
     border-color: $border-color-visited;
     border-width: $border-width-visited;
   }
-  #{$hovered} {
+  #{$is-hovered} {
     color: $color-hover;
     border-color: $border-color-hover;
     border-width: $border-width-hover;
 
-    #{$focused} {
-      @include unfocus();
+    #{$is-focused} {
+      @include sf-unfocus();
 
       color: $color-hover;
       border-color: $border-color-hover;
       border-width: $border-width-hover;
     }
   }
-  #{$focused} {
-    @include focus();
+  #{$is-focused} {
+    @include sf-focus();
 
     color: $color-focus;
     border-color: $border-color-focus;
     border-width: $border-width-focus;
   }
-  #{$actived} {
+  #{$is-active} {
     color: $color-active;
     border-color: $border-color-active;
     border-width: $border-width-active;
 
-    #{$focused} {
-      @include unfocus();
+    #{$is-focused} {
+      @include sf-unfocus();
 
       color: $color-active;
       border-color: $border-color-active;

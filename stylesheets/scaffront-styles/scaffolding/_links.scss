@@ -6,7 +6,7 @@
         @include link($options...);
 
         &.no-border {
-          @include no-border();
+          @include sf-no-border();
         }
         &.pseudo,
         &.link--pseudo {
