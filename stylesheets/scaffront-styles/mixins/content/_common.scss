@@ -2,17 +2,40 @@
 //    Framework/Mixins/Content/Common
 //*********************************************
 
-@mixin focus () {
-  // Default
-  outline: thin dotted;
-  // WebKit
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
+@function get-important ($important: false) {
+  $important: '';
+  @if (is-true($important)) {
+    $imp: '!important';
+  }
+
+  $important: unquote($important);
+
+  @return $important;
 }
 
-@mixin unfocus () {
-  outline: none;
-  outline-offset: 0;
+@mixin focus ($important: false) {
+  $important: get-important($important);
+
+  // Default
+  outline: thin dotted $important;
+  // WebKit
+  outline: 5px auto -webkit-focus-ring-color $important;
+  outline-offset: -2px $important;
+}
+
+@mixin unfocus ($important: false) {
+  $important: get-important($important);
+
+  outline: none $important;
+  outline-offset: 0 $important;
+}
+
+@mixin no-border ($important: false) {
+  $important: get-important($important);
+
+  border: none $important;
+  outline: none $important;
+  text-decoration: none $important;
 }
 
 $selection-color: #b3d4fc !default;
@@ -25,7 +48,7 @@ $selection-text-shadow: none !default;
   $root: false
 ) {
   $selector: '&';
-  @if ($root == 1 or $root == true) {
+  @if (is-true($root)) {
     $selector: '';
   }
   $selector: unquote($selector);

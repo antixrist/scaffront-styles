@@ -9,7 +9,7 @@
   $offset-x: 0,
   $offset-y: 0
 ) {
-  $position: to-list($position);
+  $position: sl-to-list($position);
 
   @if (length($position) != 2) {
     @warn('[to-outer-side] Invalid position! $position: #{$position}');
@@ -83,7 +83,7 @@
   $offset-x: 0,
   $offset-y: 0
 ) {
-  $position: to-list($position);
+  $position: sl-to-list($position);
 
   @if (length($position) != 2) {
     @warn('[to-inner-side] Invalid position! $position: #{$position}');

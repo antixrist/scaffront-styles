@@ -1,7 +1,7 @@
 $base-font-size: 14px !default;
 $base-line-height: 1.4 !default;
 $base-color: #3b3b3b !default;
-$base-font: arial !default;
+$base-font-family: sans-serif !default;
 
 $selection-color: #b3d4fc !default;
 $selection-bg-color: $base-color !default;
@@ -23,7 +23,7 @@ html {
   color: $base-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
-  font-family: sans-serif;
+  font-family: $base-font-family;
 }
 
 /*

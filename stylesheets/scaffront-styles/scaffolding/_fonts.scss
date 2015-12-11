@@ -1,6 +1,3 @@
-$stack: fonts-merge-with-standarts(
-  $fonts: $fonts,
-  $standart-fonts: $standart-fonts,
-  $standart-font-types: $standart-font-types
-);
-
+@if (type-of($fonts) == map or type-of($fonts) == list) {
+  $unused: sf-add-fonts($fonts);
+}

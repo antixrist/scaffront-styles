@@ -9,10 +9,10 @@
 
   $items-selector: ();
   @if ($btn) {
-    $items-selector: join($items-selector, to-list($btn));
+    $items-selector: join($items-selector, sl-to-list($btn));
   }
   @if ($input) {
-    $items-selector: join($items-selector, to-list($input));
+    $items-selector: join($items-selector, sl-to-list($input));
   }
 
   #{$controls-group} {
@@ -36,7 +36,7 @@
 
   $variants: ();
 
-  @each $selector in trim(to-list($controls-group-items, ',')) {
+  @each $selector in trim(sl-to-list($controls-group-items, ',')) {
     $variants: map-merge($variants, ($selector: $controls-group-items-offset));
   }
 
@@ -45,7 +45,7 @@
     $border-width: nth(map-get($btn-size, 'options'), 4);
     $offset: #{get-dimension(right, $border-width)};
 
-    @each $selector in trim(to-list($selectors, ',')) {
+    @each $selector in trim(sl-to-list($selectors, ',')) {
       $variants: map-merge($variants, ($selector: -$offset));
     }
   }
@@ -55,12 +55,12 @@
     $border-width: nth(map-get($input-size, 'options'), 4);
     $offset: #{get-dimension(right, $border-width)};
 
-    @each $selector in trim(to-list($selectors, ',')) {
+    @each $selector in trim(sl-to-list($selectors, ',')) {
       $variants: map-merge($variants, ($selector: -$offset));
     }
   }
 
-  $containers: trim(to-list($controls-group, ','));
+  $containers: trim(sl-to-list($controls-group, ','));
   @each $container in $containers {
     @each $variant, $offset in $variants {
       @each $variant2, $offset2 in $variants {

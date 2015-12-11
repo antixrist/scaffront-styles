@@ -1,6 +1,7 @@
 //*********************************************
 //    Framework/Mixins/Content/Images
 //*********************************************
+@import 'compass';
 
 @function sizes-factor ($sizes, $factor: 1) {
   $result: ();
@@ -18,7 +19,7 @@
       @if (type-of($width) == number) {
         $width: $width / $factor;
       }
-      $result: map-append($result, (width: $width));
+      $result: map-set($result, width, $width);
     } @else {
       @warn('[sizes-factor] Not exists "width" in sizes map!');
       $result: $sizes;
@@ -28,7 +29,7 @@
       @if (type-of($height) == number) {
         $height: $height / $factor;
       }
-      $result: map-append($result, (height: $height));
+      $result: map-set($result, height, $height);
     } @else {
       @warn('[sizes-factor] Not exists "height" in sizes map!');
       $result: $sizes;
@@ -39,7 +40,7 @@
       $result: $sizes;
     } @else {
       @if (type-of($sizes) == string) {
-        $sizes: to-list($sizes);
+        $sizes: sl-to-list($sizes);
       }
       @if (type-of($sizes) != list) {
         $result: $sizes;

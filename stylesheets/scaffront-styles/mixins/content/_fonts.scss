@@ -3,28 +3,8 @@
 //*********************************************
 
 // глобальная переменная. в неё будут добавляться все шрифты и из неё же извлекаться
-$sf-fonts: (
-  //(name: roboto, type: regular, font: "RobotoRegular", weight: 400, style: normal)
-);
 
-$sf-safe-fonts: (
-  arial-black:      ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  arial:            ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  courier:          ('Courier New', 'Nimbus Mono L', 'Monospace'),
-  georgia:          ('Georgia', 'Century Schoolbook L', 'serif'),
-  impact:           ('Impact', 'Charcoal CY', 'sans-serif'),
-  times-new-roman:  ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
-  trebuchet:        ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
-  verdana:          ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
-  tahoma:           ('Tahoma', 'Geneva CY', 'sans-serif')
-);
-
-$sf-safe-font-types: (
-  (type: regular,     weight: normal, style: normal),
-  (type: bold,        weight: 700,    style: normal),
-  (type: italic,      weight: normal, style: italic),
-  (type: bold-italic, weight: 700,    style: italic)
-);
+$sf-fonts: ();
 
 @function sf-add-fonts ($fonts) {
   @if (type-of($fonts) != list and type-of($fonts) != map) {
@@ -64,31 +44,41 @@ $sf-safe-font-types: (
   @return $sf-fonts;
 }
 
-@function sf-get-font-stack ($font, $fallback: null) {
-  $result: ();
+//@function sf-get-font-stack ($font, $fallback: null) {
+//  $result: ();
+//
+//  @if (map-has-key($sf-safe-fonts, $font)) {
+//    $result: join($result, map-get($sf-safe-fonts, $font));
+//  } @else {
+//    $result: join($result, ($font));
+//  }
+//
+//  @if ($fallback != null) {
+//    @if (map-has-key($sf-safe-fonts, $fallback)) {
+//      $result: join($result, map-get($sf-safe-fonts, $fallback));
+//    } @else {
+//      $result: join($result, ($fallback));
+//    }
+//  }
+//
+//  @return unquote('"#{implode('", "', $result)}"');
+//}
 
-  @if (map-has-key($sf-safe-fonts, $font)) {
-    $result: join($result, map-get($sf-safe-fonts, $font));
-  } @else {
-    $result: join($result, ($font));
-  }
-
-  @if ($fallback != null) {
-    @if (map-has-key($sf-safe-fonts, $fallback)) {
-      $result: join($result, map-get($sf-safe-fonts, $fallback));
-    } @else {
-      $result: join($result, ($fallback));
-    }
-  }
-
-  @return unquote('"#{implode('", "', $result)}"');
-}
 
 @function sf-get-font ($name, $type: regular) {
   @each $font in $sf-fonts {
     @if (map-get($font, name) == $name and map-get($font, type) == $type) {
       @return $font;
     }
+  }
+
+  @return null;
+}
+
+@function sf-get-stack ($name, $type: regular) {
+  $font: sf-get-font($name, $type);
+  @if ($font != null) {
+    @return map-get($font, stack);
   }
 
   @return null;
@@ -105,7 +95,28 @@ $sf-safe-font-types: (
 }
 
 
-// набьём стандартными безопасными стеками шрифтов глобальную переменную $sf-fonts
+
+// добавим стандартные безопасные стеки шрифтов
+
+$sf-safe-fonts: (
+  arial-black:      ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  arial:            ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  courier:          ('Courier New', 'Nimbus Mono L', 'Monospace'),
+  georgia:          ('Georgia', 'Century Schoolbook L', 'serif'),
+  impact:           ('Impact', 'Charcoal CY', 'sans-serif'),
+  times-new-roman:  ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
+  trebuchet:        ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
+  verdana:          ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
+  tahoma:           ('Tahoma', 'Geneva CY', 'sans-serif')
+);
+
+$sf-safe-font-types: (
+  (type: regular,     weight: normal, style: normal),
+  (type: bold,        weight: 700,    style: normal),
+  (type: italic,      weight: normal, style: italic),
+  (type: bold-italic, weight: 700,    style: italic)
+);
+
 @each $name, $stack in $sf-safe-fonts {
   @each $font-type in $sf-safe-font-types {
     $font: (
@@ -118,3 +129,14 @@ $sf-safe-font-types: (
     $sf-fonts: sf-add-fonts($font);
   }
 }
+
+// не отходя от кассы добавим популярные веб-шрифты
+
+$tahomaStack: sf-get-stack(tahoma);
+
+$sf-fonts: sf-add-fonts((
+  (name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
+  (name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
+  (name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
+  (name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
+));
