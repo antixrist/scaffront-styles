@@ -23,7 +23,7 @@ html {
   color: $base-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
-  @include font($base-font);
+  font-family: sans-serif;
 }
 
 /*

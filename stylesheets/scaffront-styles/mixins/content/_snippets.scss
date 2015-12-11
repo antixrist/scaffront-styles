@@ -31,7 +31,7 @@ $opacity-list-transition: opacity .2s ease-in !default;
 ) {
   $child-selector: unquote($child-selector);
   #{$child-selector} {
-    @include transition($transition);
+    transition: $transition;
   }
   #{$hovered} #{$child-selector} {
     opacity: $opacity;

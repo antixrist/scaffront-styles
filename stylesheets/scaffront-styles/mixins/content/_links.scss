@@ -2,43 +2,84 @@
 //    Framework/Mixins/Content/Links
 //*********************************************
 
-$link-color-normal: #0d44a0 !default;
-$link-color-hover: $link-color-normal !default;
-$link-color-focus: $link-color-normal !default;
-$link-color-active: #ff0000 !default;
-$link-color-visited: $link-color-normal !default;
-$link-border-color-normal: rgba($link-color-normal, .7) !default;
-$link-border-color-hover: $link-color-hover !default;
-$link-border-color-focus: $link-color-focus !default;
-$link-border-color-active: $link-color-active !default;
-$link-border-color-visited: $link-color-visited !default;
-$link-border-width-normal: 0 0 1px 0 !default;
-$link-border-width-hover: $link-border-width-normal !default;
-$link-border-width-focus: $link-border-width-normal !default;
-$link-border-width-active: $link-border-width-normal !default;
-$link-border-width-visited: $link-border-width-normal !default;
 @mixin link (
-  $color-normal: $link-color-normal,
-  $color-hover: $link-color-hover,
-  $color-focus: $link-color-focus,
-  $color-active: $link-color-active,
-  $color-visited: $link-color-visited,
-  $border-color-normal: $link-border-color-normal,
-  $border-color-hover: $link-border-color-hover,
-  $border-color-focus: $link-border-color-focus,
-  $border-color-active: $link-border-color-active,
-  $border-color-visited: $link-border-color-visited,
-  $border-width-normal: $link-border-width-normal,
-  $border-width-hover: $link-border-width-hover,
-  $border-width-focus: $link-border-width-focus,
-  $border-width-active: $link-border-width-active,
-  $border-width-visited: $link-border-width-visited,
-  $transition: .2s ease-out
+  $color-normal,
+  $color-hover: null,
+  $color-focus: null,
+  $color-active: null,
+  $color-visited: null,
+  $border-color-normal: null,
+  $border-color-hover: null,
+  $border-color-focus: null,
+  $border-color-active: null,
+  $border-color-visited: null,
+  $border-width-normal: null,
+  $border-width-hover: null,
+  $border-width-focus: null,
+  $border-width-active: null,
+  $border-width-visited: null,
+  $transition: null
 ) {
+  // Defaults
+  @if ($color-hover == null) {
+    //$color-hover: darken($color-normal, 20%);
+    $color-hover: $color-normal;
+  }
+  @if ($color-focus == null) {
+    $color-focus: $color-hover;
+  }
+  @if ($color-active == null) {
+    $color-active: #ff0000;
+  }
+  @if ($color-visited == null) {
+    $color-visited: $color-normal;
+  }
+
+  @if ($border-color-normal == null) {
+    $border-color-normal: rgba($color-normal, .6);
+  }
+
+  @if ($border-color-hover == null) {
+    $border-color-hover: $color-hover;
+  }
+  @if ($border-color-focus == null) {
+    $border-color-focus: $color-focus;
+  }
+  @if ($border-color-active == null) {
+    $border-color-active: $color-active;
+  }
+  @if ($border-color-visited == null) {
+    $border-color-visited: $color-visited;
+  }
+
+  @if ($border-width-normal == null) {
+    $border-width-normal: 0 0 1px 0;
+  }
+  @if ($border-width-hover == null) {
+    $border-width-hover: $border-width-normal;
+  }
+  @if ($border-width-focus == null) {
+    $border-width-focus: $border-width-normal;
+  }
+  @if ($border-width-active == null) {
+    $border-width-active: $border-width-normal;
+  }
+  @if ($border-width-visited == null) {
+    $border-width-visited: $border-width-normal;
+  }
+
+  @if ($transition == null) {
+    $transition: .2s ease-out;
+  }
+
   cursor: pointer;
   text-decoration : none;
   border-style: solid;
-  transition: color $transition, border-width $transition, border-color $transition;
+
+  @if ($transition) {
+    transition: color $transition, border-width $transition, border-color $transition;
+  }
+
 
   @include link-colors($color-normal, $color-hover, $color-active, $color-visited, $color-focus);
   border-color: $border-color-normal;
@@ -96,4 +137,3 @@ $link-border-width-visited: $link-border-width-normal !default;
 @mixin link-pseudo () {
   border-style: dashed;
 }
-

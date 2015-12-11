@@ -1,5 +1,7 @@
-@import 'mixins/_common';
-@import 'mixins/_relative-units';
+@import '../../bower_components/SassyLists/stylesheets/SassyLists';
 
-@import 'mixins/_layout';
-@import 'mixins/_content';
+@import 'mixins/helpers';
+@import 'mixins/relative-units';
+
+@import 'mixins/layout';
+@import 'mixins/content';

@@ -2,94 +2,119 @@
 //    Framework/Mixins/Content/Fonts
 //*********************************************
 
-$fonts: (
-  //(name: roboto, type: regular, font: font-stack(RobotoRegular, tahoma), weight: 400, style: normal)
-) !default;
-
-$standart-fonts: (
-  arial-black: ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  arial: ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  courier: ('Courier New', 'Nimbus Mono L', 'Monospace'),
-  georgia: ('Georgia', 'Century Schoolbook L', 'serif'),
-  impact: ('Impact', 'Charcoal CY', 'sans-serif'),
-  times-new-roman: ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
-  trebuchet: ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
-  verdana: ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
-  tahoma: ('Tahoma', 'Geneva CY', 'sans-serif')
+// глобальная переменная. в неё будут добавляться все шрифты и из неё же извлекаться
+$sf-fonts: (
+  //(name: roboto, type: regular, font: "RobotoRegular", weight: 400, style: normal)
 );
 
-$standart-font-types: (
-  (type: regular, weight: normal, style: normal),
-  (type: bold, weight: bold, style: normal),
-  (type: italic, weight: normal, style: italic),
-  (type: bold-italic, weight: bold, style: italic)
+$sf-safe-fonts: (
+  arial-black:      ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  arial:            ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  courier:          ('Courier New', 'Nimbus Mono L', 'Monospace'),
+  georgia:          ('Georgia', 'Century Schoolbook L', 'serif'),
+  impact:           ('Impact', 'Charcoal CY', 'sans-serif'),
+  times-new-roman:  ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
+  trebuchet:        ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
+  verdana:          ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
+  tahoma:           ('Tahoma', 'Geneva CY', 'sans-serif')
 );
 
-@function font-stack ($font, $fallback: null) {
+$sf-safe-font-types: (
+  (type: regular,     weight: normal, style: normal),
+  (type: bold,        weight: 700,    style: normal),
+  (type: italic,      weight: normal, style: italic),
+  (type: bold-italic, weight: 700,    style: italic)
+);
+
+@function sf-add-fonts ($fonts) {
+  @if (type-of($fonts) != list and type-of($fonts) != map) {
+    @return $sf-fonts;
+  }
+
+  $_fonts: $fonts;
+
+  // нам нужен list шрифтов.
+  // если пришёл обычный map, то надо завернуть его в список
+  @if (type-of($_fonts) == map and map-has-key($_fonts, name) and map-has-key($_fonts, stack)) {
+    $_fonts: ($_fonts,);
+  }
+
+  @each $font in $_fonts {
+    @if (type-of($font) == map && map-has-key($font, name) and map-has-key($font, stack)) {
+
+      @if (map-has-key($font, type) != true) {
+        $font: map-merge($font, (type: regular));
+      }
+      @if (map-has-key($font, weight) != true) {
+        $font: map-merge($font, (weight: 400));
+      }
+      @if (map-has-key($font, style) != true) {
+        $font: map-merge($font, (style: normal));
+      }
+
+      $stack: map-get($font, stack);
+      @if (type-of($stack)) {
+
+      }
+
+      $sf-fonts: append($sf-fonts, $font) !global;
+    }
+  }
+
+  @return $sf-fonts;
+}
+
+@function sf-get-font-stack ($font, $fallback: null) {
   $result: ();
 
-  @if (map-has-key($standart-fonts, $font)) {
-    $result: join($result, map-get($standart-fonts, $font));
+  @if (map-has-key($sf-safe-fonts, $font)) {
+    $result: join($result, map-get($sf-safe-fonts, $font));
   } @else {
     $result: join($result, ($font));
   }
 
   @if ($fallback != null) {
-    @if (map-has-key($standart-fonts, $fallback)) {
-      $result: join($result, map-get($standart-fonts, $fallback));
+    @if (map-has-key($sf-safe-fonts, $fallback)) {
+      $result: join($result, map-get($sf-safe-fonts, $fallback));
     } @else {
       $result: join($result, ($fallback));
     }
   }
 
-  @return '"#{implode('", "', $result)}"';
+  @return unquote('"#{implode('", "', $result)}"');
 }
 
-
-@function fonts-merge-with-standarts (
-  $fonts,
-  $standart-fonts: $standart-fonts,
-  $standart-font-types: $standart-font-types
-) {
-  @if (type-of($fonts) != list) {
-    $fonts: ();
-    @warn("[function 'fonts-merge-with-standarts'] Not a valid list! $fonts: #{$fonts}");
-  }
-
-  $stack: $fonts;
-  $fonts-stack-separator: list-separator($stack);
-  @if (length($stack) == 0) {
-    $fonts-stack-separator: comma;
-  }
-
-  @each $_font, $_stack in $standart-fonts {
-    @each $standart-font-type in $standart-font-types {
-      $stack: append($stack, (
-        name: $_font,
-        font: $_stack,
-        type: map-get($standart-font-type, 'type'),
-        weight: map-get($standart-font-type, 'weight'),
-        style: map-get($standart-font-type, 'style')
-      ), $fonts-stack-separator);
+@function sf-get-font ($name, $type: regular) {
+  @each $font in $sf-fonts {
+    @if (map-get($font, name) == $name and map-get($font, type) == $type) {
+      @return $font;
     }
   }
 
-  @return $stack;
+  @return null;
 }
 
-$stack: fonts-merge-with-standarts(
-  $fonts: $fonts,
-  $standart-fonts: $standart-fonts,
-  $standart-font-types: $standart-font-types
-);
+@mixin sf-font ($name, $type: regular) {
+  $font: sf-get-font($name, $type);
 
-@mixin font ($name, $type: regular, $stack: $stack) {
-  @each $font in $stack {
-    @if ($name == map-get($font, name) and $type == map-get($font, type)) {
-      font-family: implode(', ', map-get($font, font));
-      font-weight: map-get($font, weight);
-      font-style: map-get($font, style);
-    }
+  @if ($font != null) {
+    font-family: implode(', ', map-get($font, stack));
+    font-weight: map-get($font, weight);
+    font-style: map-get($font, style);
   }
 }
 
+
+// набьём стандартными безопасными стеками шрифтов глобальную переменную $sf-al-fonts
+@each $name, $stack in $sf-safe-fonts {
+  @each $font-type in $sf-safe-font-types {
+    $font: (
+      name:   $name,
+      stack:  $stack,
+      type:   map-get($font-type, 'type'),
+      weight: map-get($font-type, 'weight'),
+      style:  map-get($font-type, 'style')
+    );
+    $sf-fonts: sf-add-fonts($font);
+  }
+}
