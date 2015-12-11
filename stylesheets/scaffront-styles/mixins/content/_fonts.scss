@@ -2,6 +2,8 @@
 //    Framework/Mixins/Content/Fonts
 //*********************************************
 
+@import 'SassyLists';
+
 // глобальная переменная. в неё будут добавляться все шрифты и из неё же извлекаться
 
 $sf-fonts: ();
@@ -33,9 +35,8 @@ $sf-fonts: ();
       }
 
       $stack: map-get($font, stack);
-      @if (type-of($stack)) {
-
-      }
+      $stack: sl-to-list($stack);
+      $font: map-merge($font, (stack: $stack));
 
       $sf-fonts: append($sf-fonts, $font) !global;
     }
@@ -43,27 +44,6 @@ $sf-fonts: ();
 
   @return $sf-fonts;
 }
-
-//@function sf-get-font-stack ($font, $fallback: null) {
-//  $result: ();
-//
-//  @if (map-has-key($sf-safe-fonts, $font)) {
-//    $result: join($result, map-get($sf-safe-fonts, $font));
-//  } @else {
-//    $result: join($result, ($font));
-//  }
-//
-//  @if ($fallback != null) {
-//    @if (map-has-key($sf-safe-fonts, $fallback)) {
-//      $result: join($result, map-get($sf-safe-fonts, $fallback));
-//    } @else {
-//      $result: join($result, ($fallback));
-//    }
-//  }
-//
-//  @return unquote('"#{implode('", "', $result)}"');
-//}
-
 
 @function sf-get-font ($name, $type: regular) {
   @each $font in $sf-fonts {
@@ -75,13 +55,21 @@ $sf-fonts: ();
   @return null;
 }
 
-@function sf-get-stack ($name, $type: regular) {
+@function sf-get-stack ($name, $type: regular, $to-string: true) {
   $font: sf-get-font($name, $type);
+  $stack: ();
+
   @if ($font != null) {
-    @return map-get($font, stack);
+    $stack: map-get($font, stack);
+
+    @if (is-true($to-string)) {
+      $stack: unquote('"#{sl-to-string($stack, '", "')}"');
+    } @else {
+      $stack: sl-to-list($stack);
+    }
   }
 
-  @return null;
+  @return $stack;
 }
 
 @mixin sf-font ($name, $type: regular) {
@@ -93,50 +81,3 @@ $sf-fonts: ();
     font-style: map-get($font, style);
   }
 }
-
-
-
-// добавим стандартные безопасные стеки шрифтов
-
-$sf-safe-fonts: (
-  arial-black:      ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  arial:            ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
-  courier:          ('Courier New', 'Nimbus Mono L', 'Monospace'),
-  georgia:          ('Georgia', 'Century Schoolbook L', 'serif'),
-  impact:           ('Impact', 'Charcoal CY', 'sans-serif'),
-  times-new-roman:  ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
-  trebuchet:        ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
-  verdana:          ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
-  tahoma:           ('Tahoma', 'Geneva CY', 'sans-serif')
-);
-
-$sf-safe-font-types: (
-  (type: regular,     weight: normal, style: normal),
-  (type: bold,        weight: 700,    style: normal),
-  (type: italic,      weight: normal, style: italic),
-  (type: bold-italic, weight: 700,    style: italic)
-);
-
-@each $name, $stack in $sf-safe-fonts {
-  @each $font-type in $sf-safe-font-types {
-    $font: (
-      name:   $name,
-      stack:  $stack,
-      type:   map-get($font-type, 'type'),
-      weight: map-get($font-type, 'weight'),
-      style:  map-get($font-type, 'style')
-    );
-    $sf-fonts: sf-add-fonts($font);
-  }
-}
-
-// не отходя от кассы добавим популярные веб-шрифты
-
-$tahomaStack: sf-get-stack(tahoma);
-
-$sf-fonts: sf-add-fonts((
-  (name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
-  (name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
-  (name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
-  (name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
-));

@@ -8,9 +8,7 @@
     $imp: '!important';
   }
 
-  $important: unquote($important);
-
-  @return $important;
+  @return unquote($important);
 }
 
 @mixin focus ($important: false) {

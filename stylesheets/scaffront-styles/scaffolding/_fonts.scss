@@ -1,3 +1,50 @@
+// добавим стандартные безопасные стеки шрифтов
+
+$fonts: () !default;
+
+$sf-safe-fonts: (
+  arial-black:      ('Arial Black', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  arial:            ('Arial', 'Helvetica CY', 'Nimbus Sans L', 'sans-serif'),
+  courier:          ('Courier New', 'Nimbus Mono L', 'Monospace'),
+  georgia:          ('Georgia', 'Century Schoolbook L', 'serif'),
+  impact:           ('Impact', 'Charcoal CY', 'sans-serif'),
+  times-new-roman:  ('Times New Roman', 'Times CY', 'Nimbus Roman No9 L', 'serif'),
+  trebuchet:        ('Trebuchet MS', 'Helvetica CY', 'sans-serif'),
+  verdana:          ('Verdana', 'Geneva CY', 'DejaVu Sans', 'sans-serif'),
+  tahoma:           ('Tahoma', 'Geneva CY', 'sans-serif')
+);
+
+$sf-safe-font-types: (
+  (type: regular,     weight: normal, style: normal),
+  (type: bold,        weight: 700,    style: normal),
+  (type: italic,      weight: normal, style: italic),
+  (type: bold-italic, weight: 700,    style: italic)
+);
+
+@each $name, $stack in $sf-safe-fonts {
+  @each $font-type in $sf-safe-font-types {
+    $font: (
+      name:   $name,
+      stack:  $stack,
+      type:   map-get($font-type, 'type'),
+      weight: map-get($font-type, 'weight'),
+      style:  map-get($font-type, 'style')
+    );
+    $sf-fonts: sf-add-fonts($font);
+  }
+}
+
+// и, не отход€ от кассы, добавим попул€рные веб-шрифты
+$tahomaStack: sf-get-stack(tahoma);
+
+$sf-fonts: sf-add-fonts((
+  (name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
+  (name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
+  (name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
+  (name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
+));
+
+
 @if (type-of($fonts) == map or type-of($fonts) == list) {
-  $unused: sf-add-fonts($fonts);
+  $sf-fonts: sf-add-fonts($fonts);
 }
