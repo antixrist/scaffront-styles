@@ -1,9 +1,11 @@
-@import '../bower_components/compass-mixins/lib/compass';
-@import '../bower_components/breakpoint-sass/stylesheets/breakpoint';
-@import '../bower_components/singularity/stylesheets/singularitygs';
-@import '../bower_components/sass-toolkit/stylesheets/toolkit';
-@import '../bower_components/SassyLists/stylesheets/SassyLists';
+@import 'compass';
+@import 'breakpoint';
+@import 'singularitygs';
+@import 'toolkit';
+@import 'SassyLists';
+@import 'sass-units-transform';
+@import 'normalize-scss';
 
-@import 'scaffront-styles/vars';
 @import 'scaffront-styles/mixins';
+@import 'scaffront-styles/vars';
 @import 'scaffront-styles/scaffolding';

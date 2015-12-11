@@ -1,5 +1,9 @@
-@import '../../bower_components/SassyLists/stylesheets/SassyLists';
-@import '../../bower_components/sass-units-transform/sass-units-transform';
+@import 'compass';
+@import 'breakpoint';
+@import 'singularitygs';
+@import 'toolkit';
+@import 'SassyLists';
+@import 'sass-units-transform';
 
 @import 'mixins/helpers';
 @import 'mixins/layout';

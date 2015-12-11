@@ -105,7 +105,7 @@ $sf-safe-font-types: (
 }
 
 
-// набьём стандартными безопасными стеками шрифтов глобальную переменную $sf-al-fonts
+// набьём стандартными безопасными стеками шрифтов глобальную переменную $sf-fonts
 @each $name, $stack in $sf-safe-fonts {
   @each $font-type in $sf-safe-font-types {
     $font: (
