@@ -2,6 +2,8 @@
 //    Framework/Mixins/Layout/Carcass
 //*********************************************
 
+@import 'sassy-validation';
+
 //<div #{$selector-container}>
 //  <div #{$selector-content-container}>
 //    <main #{$selector-content} role="main">
@@ -177,81 +179,96 @@ $layout-sticky-footer-selector-footer: '.layout-footer' !default;
 }
 
 
-$layout-width-min: 960px !default;
-$layout-width-max: 1200px !default;
-$layout-width-side-space: 50px !default;
-$layout-width-side-space-type: padding !default; // or "margin"
-@mixin sf-layout-width-min (
-  $width: $layout-width-min,
-  $side-space: $layout-width-side-space,
-  $side-space-type: $layout-width-side-space-type
-) {
-  @if (type-of($width) == number and $width > 0) {
-    margin-left: auto;
-    margin-right: auto;
-
-    $min-width: $width;
-    @if (type-of($side-space) == number and $side-space > 0) {
-      $side-space-type: unquote($side-space-type);
-
-      @if ($side-space-type != padding) {
-        $side-space-type: margin;
-        $min-width: $width - $side-space*2;
-      }
-
-      #{$side-space-type}-left: $side-space;
-      #{$side-space-type}-right: $side-space;
-    }
-
-    min-width: $min-width;
-  }
-}
-
-@mixin sf-layout-width-max (
-  $width: $layout-width-max,
-  $side-space: $layout-width-side-space,
-  $side-space-type: $layout-width-side-space-type
-) {
-  @if (type-of($width) == number and $width > 0) {
-    margin-left: auto;
-    margin-right: auto;
-
-    $max-width: $width;
-    @if (type-of($side-space) == number and $side-space > 0) {
-      $side-space-type: unquote($side-space-type);
-
-      @if ($side-space-type != padding) {
-        $side-space-type: margin;
-        $max-width: $width - $side-space*2;
-      }
-
-      #{$side-space-type}-left: $side-space;
-      #{$side-space-type}-right: $side-space;
-    }
-
-    max-width: $max-width;
-  }
-}
-
-@mixin sf-layout-width (
-  $min: $layout-width-min,
-  $max: $layout-width-max,
-  $side-space: $layout-width-side-space,
-  $side-space-type: $layout-width-side-space-type
-) {
-
-  @include sf-layout-width-min (
-    $width: $layout-width-min,
-    $side-space: $layout-width-side-space,
-    $side-space-type: $layout-width-side-space-type
-  );
-
-  @include sf-layout-width-max (
-    $width: $layout-width-max,
-    $side-space: $layout-width-side-space,
-    $side-space-type: $layout-width-side-space-type
-  );
-}
-
-
+//$layout-width-min: 960px !default;
+//$layout-width-max: 1200px !default;
+//$layout-width-side-space: 50px !default;
+//$layout-width-side-space-type: padding !default; // or "margin"
+//@mixin sf-layout-width-min (
+//  $width: $layout-width-min,
+//  $side-space: $layout-width-side-space,
+//  $side-space-type: $layout-width-side-space-type
+//) {
+//  $side-space_: strip-units($side-space);
+//  $side-space: if(is-number($side-space_) and $side-space_ > 0, $side-space_, null);
+//
+//  $width_: strip-units($width);
+//  $width: if(is-number($width_) and $width_ > 0, $width_, null);
+//
+//  $side-space-type: unquote($side-space-type);
+//
+//  @if (not is-null($width)) {
+//    margin-left: auto;
+//    margin-right: auto;
+//
+//    $min-width: $width;
+//    @if (not is-null($side-space)) {
+//      $side-space-type: unquote($side-space-type);
+//
+//      @if ($side-space-type != padding) {
+//        $side-space-type: margin;
+//        $min-width: $width - $side-space*2;
+//      }
+//
+//      #{$side-space-type}-left: $side-space;
+//      #{$side-space-type}-right: $side-space;
+//    }
+//
+//    min-width: $min-width;
+//  }
+//}
+//
+//@mixin sf-layout-width-max (
+//  $width: $layout-width-max,
+//  $side-space: $layout-width-side-space,
+//  $side-space-type: $layout-width-side-space-type
+//) {
+//  $side-space_: strip-units($side-space);
+//  $side-space: if(is-number($side-space_) and $side-space_ > 0, $side-space_, null);
+//
+//  $width_: strip-units($width);
+//  $width: if(is-number($width_) and $width_ > 0, $width_, null);
+//
+//  $side-space-type: unquote($side-space-type);
+//
+//  @if (not is-null($width)) {
+//    margin-left: auto;
+//    margin-right: auto;
+//
+//    $max-width: $width;
+//    @if (not is-null($side-space)) {
+//      $side-space-type: unquote($side-space-type);
+//
+//      @if ($side-space-type != padding) {
+//        $side-space-type: margin;
+//        $max-width: $width - $side-space*2;
+//      }
+//
+//      #{$side-space-type}-left: $side-space;
+//      #{$side-space-type}-right: $side-space;
+//    }
+//
+//    max-width: $max-width;
+//  }
+//}
+//
+//@mixin sf-layout-width (
+//  $min: 1000px,
+//  $max: 1400px,
+//  $side-space: 50px,
+//  $side-space-type: padding
+//) {
+//
+//  @include sf-layout-width-min (
+//    $width: $min,
+//    $side-space: $side-space,
+//    $side-space-type: $side-space-type
+//  );
+//
+//  @include sf-layout-width-max (
+//    $width: $max,
+//    $side-space: $side-space,
+//    $side-space-type: $side-space-type
+//  );
+//}
+//
 

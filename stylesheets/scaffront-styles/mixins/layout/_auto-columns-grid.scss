@@ -117,9 +117,9 @@
   $selector-aside-center: '.asides__center',
   $gutter: 0
 ) {
-  $aside-left: unquote($selector-aside-left);
-  $aside-right: unquote($selector-aside-right);
-  $aside-center: unquote($selector-aside-center);
+  $aside-left:    unquote($selector-aside-left);
+  $aside-right:   unquote($selector-aside-right);
+  $aside-center:  unquote($selector-aside-center);
 
   $aside-center: if($aside-center and not is-empty($aside-center),  $aside-center,  null);
   $aside-left:   if($aside-left   and not is-empty($aside-left),    $aside-left,    null);
