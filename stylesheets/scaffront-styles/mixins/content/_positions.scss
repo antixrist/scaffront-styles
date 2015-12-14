@@ -5,12 +5,62 @@
 @import "sassdash";
 @import "sassy-validation";
 
-@mixin sf-stretch () {
+@mixin sf-stretch ($direction: x y) {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+
+  @if (not is-list($direction)) { $direction: ($direction,); }
+
+  $direction-x: index($direction, x);
+  $direction-y: index($direction, y);
+
+  @if (is-null($direction-x) and is-null($direction-y)) {
+    $direction-x: true;
+    $direction-y: true;
+  }
+
+  @if ($direction-x) {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  @if ($direction-y) {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+  }
+}
+
+@mixin sf-stretch-x () {
+  @include sf-stretch(x);
+}
+
+@mixin sf-stretch-y () {
+  @include sf-stretch(y);
+}
+
+@mixin sr-ratio (
+  $ratio: 1/1,
+  $selector: '> *'
+) {
+
+  overflow: hidden;
+  position: relative;
+
+  // The container's height, as a percentage of the
+  // container's width, is set by assigning
+  // padding-top to a pseudo-element.
+  &:before {
+    content: "";
+    display: block;
+    height: 0;
+    padding-top: (1 / $ratio) * 100%;
+  }
+
+  @if (not is-null($selector) and not is-empty($selector)) {
+    #{$selector} {
+      @include sf-stretch;
+    }
+  }
 }
 
 @mixin sf-smart-position ($position, $offset: null, $sizes: null) {

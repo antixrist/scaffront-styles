@@ -24,7 +24,7 @@ $layout-sidebars-sidebar-left-width: 0 !default;
 $layout-sidebars-sidebar-left-gutter: 0 !default;
 $layout-sidebars-sidebar-right-width: 0 !default;
 $layout-sidebars-sidebar-right-gutter: 0 !default;
-@mixin sidebars (
+@mixin sf-sidebars (
   $selector-container: $layout-sidebars-selector-container,
   $selector-content-container: $layout-sidebars-selector-content-container,
   $selector-content: $layout-sidebars-selector-content,
@@ -109,11 +109,11 @@ $layout-sticky-footer-height: 100px !default;
 $layout-sticky-footer-selector-container: '.layout' !default;
 $layout-sticky-footer-selector-content: '.layout-middle' !default;
 $layout-sticky-footer-selector-footer: '.layout-footer' !default;
-@mixin sticky-footer (
-  $height: $layout-sticky-footer-height,
-  $selector-container: $layout-sticky-footer-selector-container,
-  $selector-content: $layout-sticky-footer-selector-content,
-  $selector-footer: $layout-sticky-footer-selector-footer
+@mixin sf-sticky-footer (
+  $height: 100px,
+  $selector-container: '.layout',
+  $selector-content: '.layout-middle',
+  $selector-footer: '.layout-footer'
 ) {
   @if (type-of($height) == number and $height > 0) {
     @at-root {
@@ -143,14 +143,45 @@ $layout-sticky-footer-selector-footer: '.layout-footer' !default;
   }
 }
 
+@mixin sf-sticky-footer-fluid (
+  $container: null,
+  $footer: '.layout__footer'
+) {
+  @at-root {
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    @if (not is-null($container) and not is-empty($container)) {
+      #{$container} {
+        display: table;
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    #{$footer} {
+      display: table-row;
+      height: 1px;
+    }
+  }
+
+  @if (is-null($container) or is-empty($container)) {
+    display: table;
+    height: 100%;
+    width: 100%;
+  }
+}
 
 
 $layout-width-min: 960px !default;
 $layout-width-max: 1200px !default;
 $layout-width-side-space: 50px !default;
 $layout-width-side-space-type: padding !default; // or "margin"
-
-@mixin layout-width-min (
+@mixin sf-layout-width-min (
   $width: $layout-width-min,
   $side-space: $layout-width-side-space,
   $side-space-type: $layout-width-side-space-type
@@ -176,7 +207,7 @@ $layout-width-side-space-type: padding !default; // or "margin"
   }
 }
 
-@mixin layout-width-max (
+@mixin sf-layout-width-max (
   $width: $layout-width-max,
   $side-space: $layout-width-side-space,
   $side-space-type: $layout-width-side-space-type
@@ -202,20 +233,20 @@ $layout-width-side-space-type: padding !default; // or "margin"
   }
 }
 
-@mixin layout-width (
+@mixin sf-layout-width (
   $min: $layout-width-min,
   $max: $layout-width-max,
   $side-space: $layout-width-side-space,
   $side-space-type: $layout-width-side-space-type
 ) {
 
-  @include layout-width-min (
+  @include sf-layout-width-min (
     $width: $layout-width-min,
     $side-space: $layout-width-side-space,
     $side-space-type: $layout-width-side-space-type
   );
 
-  @include layout-width-max (
+  @include sf-layout-width-max (
     $width: $layout-width-max,
     $side-space: $layout-width-side-space,
     $side-space-type: $layout-width-side-space-type

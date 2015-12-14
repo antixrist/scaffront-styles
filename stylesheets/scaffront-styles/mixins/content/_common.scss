@@ -241,7 +241,6 @@ $base-gutter: $base-font-size !default;
   }
 }
 
-
 /*
 .qwe {
   @include sf-image-preload('qweqwe.jpg');
@@ -396,3 +395,14 @@ $_preload-image-urls:     () !default;
 }
 
 @mixin sf-paddings ($args...) { @include sf-padding($args...); }
+
+@mixin sf-size ($size) {
+  @include sf-styles(
+    width height,
+    $size,
+    $defaults: (width: auto, height: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-sizes ($args...) { @include sf-size($args...); }
