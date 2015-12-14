@@ -80,20 +80,18 @@ $is-success:  unquote('&.is-success') !default;
   $font-size:             $base-font-size,
   $line-height:           $base-line-height,
   $border-width:          1px,
-  $padding-vertical:      5px,
-  $padding-horizontal:    10px,
+  $padding:               5px 10px,
   //$lines:                 1,
   $active-offset:         1px,
   $active-offset-type:    inner // inner/outer/false
 ) {
 
   $styles: sf-control-sizes(
-    $height:                $height,
-    $font-size:             $font-size,
-    $line-height:           $line-height,
-    $border-width:          $border-width,
-    $padding-vertical:      $padding-vertical,
-    $padding-horizontal:    $padding-horizontal
+    $height:       $height,
+    $font-size:    $font-size,
+    $line-height:  $line-height,
+    $border-width: $border-width,
+    $padding:      $padding
   );
 
   @include sf-styles($styles, $exclude-values: null auto);
