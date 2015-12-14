@@ -1,7 +1,7 @@
 {
   "name": "scaffront-styles",
   "description": "",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "stylesheets/_scaffront-styles.scss",
   "moduleType": [],
   "keywords": [
