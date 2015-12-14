@@ -35,6 +35,9 @@
 @function sf-bounds ($data, $prefix: '') {
   $data: sf-assign-defaults(top right bottom left, $data, (top: null, right: null, bottom: null, left: null));
   $data: map-merge($data, (
+    top:    if(is-null(map-get($data, top)),    0, map-get($data, top))
+  ));
+  $data: map-merge($data, (
     right:  if(is-null(map-get($data, right)),  map-get($data, top),   map-get($data, right))
   ));
   $data: map-merge($data, (
@@ -44,12 +47,27 @@
     left:   if(is-null(map-get($data, left)),   map-get($data, right), map-get($data, left))
   ));
 
+  @if (not is-empty($prefix)) {
+    $data: sf-map-set-key-prefix($data, $prefix);
+  }
+
   @return $data;
 }
 
-@function sf-bounds-qwe () {
+@function sf-bounds-list ($data, $prefix: '') {
+  $_bounds: sf-bounds($data, $prefix);
 
+  $bounds: ();
+  @each $key, $value in $_bounds {
+    $bounds: append($bounds, $value);
+  }
+  @return $bounds;
 }
+
+@function sf-bounds-map ($data, $prefix: '') {
+  @return sf-bounds($data, $prefix);
+}
+
 
 $base-font-size:    14px !default;
 $base-line-height:  24px !default;
@@ -64,27 +82,25 @@ $base-line-height:  24px !default;
   $height:        unquote($height);
   $font-size:     unquote($font-size);
   $line-height:   unquote($line-height);
-  $padding:       unquote($padding);
   $border-width:  unquote($border-width);
 
   $height:        if(is-measure($height) and $height > 0, $height, null);
   $font-size:     if(is-measure($font-size) and $font-size > 0, $font-size, null);
   $line-height:   if(is-measure($line-height) and $line-height > 0, $line-height, null);
 
-  $paddings: sf-assign-defaults(top right bottom left, $padding, (top: null, right: null, bottom: null, left: null));
-  $paddings: map-merge($paddings, (
-    right:   if(is-null(map-get($paddings, right)),  map-get($paddings, top),    map-get($paddings, right))
-  ));
-  $paddings: map-merge($paddings, (
-    bottom:  if(is-null(map-get($paddings, bottom)), map-get($paddings, top),    map-get($paddings, bottom))
-  ));
-  $paddings: map-merge($paddings, (
-    left:    if(is-null(map-get($paddings, left)),   map-get($paddings, right),  map-get($paddings, left))
-  ));
+  $paddings: sf-bounds-map($padding, 'padding-');
+  $border-width: sf-assign(border-top-width border-right-width border-bottom-width border-left-width, sf-bounds-list($border-width));
 
 
-  @return $paddings;
+
+  @return $border-width;
 }
+
+
+
+
+
+
 
 @function sf-control-fit-to-height(
   $height,
