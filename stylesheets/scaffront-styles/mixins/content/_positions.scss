@@ -5,6 +5,14 @@
 @import "sassdash";
 @import "sassy-validation";
 
+@mixin sf-stretch () {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 @mixin sf-smart-position ($position, $offset: null, $sizes: null) {
   $position-x-allowed: center left outer-left right outer-right;
   $position-y-allowed: center outer-top top outer-bottom bottom;
@@ -13,30 +21,35 @@
   $position-x: unquote(map-get($position, x));
   $position-y: unquote(map-get($position, y));
 
-  @if ($position-x == center and not $position-y) {
-    $position: map-set($position, y, center);
-    $position-y: map-get($position, y);
-  }
+  $good: false;
+  @if (not is-null($position-x) or not is-null($position-y)) {
+    $good: true;
 
-  $position: map-merge($position, (
-    y: map-get($position, x),
-    x: map-get($position, y)
-  ));
+    @if ($position-x == center and is-null($position-y)) {
+      $position:    map-set($position, y, center);
+      $position-y:  map-get($position, y);
+    }
 
-  @if (index($position-y-allowed, $position-x) and index($position-x-allowed, $position-y)) {
-    $position: map-merge($position, (y: $position-x, x: $position-y));
-    $position-x: map-get($position, x);
-    $position-y: map-get($position, y);
-  }
+    $position: map-merge($position, (
+      y: map-get($position, x),
+      x: map-get($position, y)
+    ));
 
-  $good: true;
-  @if (not index($position-x-allowed, $position-x)) {
-    @warn('[sf-smart-position] Invalid horizontal position: "#{$position-x}". Allowed: #{inspect($position-x-allowed)}');
-    $good: false;
-  }
-  @if (not index($position-y-allowed, $position-y)) {
-    @warn('[sf-smart-position] Invalid vertical position: "#{$position-y}". Allowed: #{inspect($position-y-allowed)}');
-    $good: false;
+    @if (index($position-y-allowed, $position-x) and index($position-x-allowed, $position-y)) {
+      $position: map-merge($position, (y: $position-x, x: $position-y));
+      $position-x: map-get($position, x);
+      $position-y: map-get($position, y);
+    }
+
+    $good: true;
+    @if (not index($position-x-allowed, $position-x)) {
+      @warn('[sf-smart-position] Invalid horizontal position: "#{$position-x}". Allowed: #{inspect($position-x-allowed)}');
+      $good: false;
+    }
+    @if (not index($position-y-allowed, $position-y)) {
+      @warn('[sf-smart-position] Invalid vertical position: "#{$position-y}". Allowed: #{inspect($position-y-allowed)}');
+      $good: false;
+    }
   }
 
   @if ($good) {
@@ -135,3 +148,40 @@
 
 @mixin sf-smart-positions ($args...) { @include sf-smart-position($args...); }
 
+@mixin sf-smart-positions-t     ($args...) { @include sf-smart-position(top, $args...); }
+@mixin sf-smart-positions-b     ($args...) { @include sf-smart-position(bottom, $args...); }
+@mixin sf-smart-positions-l     ($args...) { @include sf-smart-position(left, $args...); }
+@mixin sf-smart-positions-r     ($args...) { @include sf-smart-position(right, $args...); }
+
+@mixin sf-smart-positions-ot    ($args...) { @include sf-smart-position(outer-top, $args...); }
+@mixin sf-smart-positions-ob    ($args...) { @include sf-smart-position(outer-bottom, $args...); }
+@mixin sf-smart-positions-or    ($args...) { @include sf-smart-position(outer-right, $args...); }
+@mixin sf-smart-positions-ol    ($args...) { @include sf-smart-position(outer-left, $args...); }
+
+@mixin sf-smart-positions-tr    ($args...) { @include sf-smart-position(top right, $args...); }
+@mixin sf-smart-positions-tl    ($args...) { @include sf-smart-position(top left, $args...); }
+@mixin sf-smart-positions-br    ($args...) { @include sf-smart-position(bottom right, $args...); }
+@mixin sf-smart-positions-bl    ($args...) { @include sf-smart-position(bottom left, $args...); }
+
+@mixin sf-smart-positions-otr   ($args...) { @include sf-smart-position(outer-top right, $args...); }
+@mixin sf-smart-positions-otl   ($args...) { @include sf-smart-position(outer-top left, $args...); }
+@mixin sf-smart-positions-obr   ($args...) { @include sf-smart-position(outer-bottom right, $args...); }
+@mixin sf-smart-positions-obl   ($args...) { @include sf-smart-position(outer-bottom left, $args...); }
+
+@mixin sf-smart-positions-tor   ($args...) { @include sf-smart-position(top outer-right, $args...); }
+@mixin sf-smart-positions-tol   ($args...) { @include sf-smart-position(top outer-left, $args...); }
+@mixin sf-smart-positions-bor   ($args...) { @include sf-smart-position(bottom outer-right, $args...); }
+@mixin sf-smart-positions-bol   ($args...) { @include sf-smart-position(bottom outer-left, $args...); }
+
+@mixin sf-smart-positions-otor  ($args...) { @include sf-smart-position(outer-top outer-right, $args...); }
+@mixin sf-smart-positions-otol  ($args...) { @include sf-smart-position(outer-top outer-left, $args...); }
+@mixin sf-smart-positions-obor  ($args...) { @include sf-smart-position(outer-bottom outer-right, $args...); }
+@mixin sf-smart-positions-obol  ($args...) { @include sf-smart-position(outer-bottom outer-left, $args...); }
+
+@mixin sf-smart-positions-c     ($args...) { @include sf-smart-position(center, $args...); }
+@mixin sf-smart-positions-cc    ($args...) { @include sf-smart-position(center center, $args...); }
+
+@mixin sf-smart-positions-tc    ($args...) { @include sf-smart-position(top center, $args...); }
+@mixin sf-smart-positions-rc    ($args...) { @include sf-smart-position(right center, $args...); }
+@mixin sf-smart-positions-bc    ($args...) { @include sf-smart-position(bottom center, $args...); }
+@mixin sf-smart-positions-lc    ($args...) { @include sf-smart-position(left center, $args...); }
