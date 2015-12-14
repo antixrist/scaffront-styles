@@ -2,6 +2,30 @@
 //    Framework/Mixins/Content/Common
 //*********************************************
 
+@import 'sassy-maps';
+@import 'sassdash';
+@import 'sassy-validation';
+
+@mixin e ($names...) {
+  @if length($names) {
+    @for $i from 1 through length($names) {
+      @at-root &__#{nth($names, $i)} {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin m ($names...) {
+  @if length($names) {
+    @for $i from 1 through length($names) {
+      @at-root &--#{nth($names, $i)} {
+        @content;
+      }
+    }
+  }
+}
+
 @mixin sf-focus ($important: false) {
   $important: sf-important($important);
 
@@ -103,7 +127,7 @@
   }
 }
 
-@mixin sf-ir () {
+@mixin sf-visually-hidden-content () {
   background-color: transparent;
   border: 0;
   overflow: hidden;
@@ -115,6 +139,12 @@
     width: 0;
     height: 100%;
   }
+}
+
+@mixin sf-hidden-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
 }
 
 /*
@@ -139,3 +169,123 @@
     clear: both;
   }
 }
+
+
+/*
+.qwe {
+  @include sf-image-preload('qweqwe.jpg');
+}
+
+// after all styles
+@include sf-image-preload;
+*/
+$_preload-image-list:     () !default;
+$_preload-images-loaded:  false !default;
+$_preload-image-urls:     () !default;
+@mixin sf-image-preload ($preload: run) {
+  @if not variable-exists(_preload-image-list) {
+    $_preload-image-list: () !global;
+  }
+  @if not variable-exists(_preload-image-urls) {
+    $_preload-image-urls: () !global;
+  }
+  @if not variable-exists(_preload-images-loaded) {
+    $_preload-images-loaded: false !global;
+  }
+  @if $preload == run and not $_preload-images-loaded {
+    $_preload-images-loaded: true !global;
+    html:after {
+      content: '';
+      display: none;
+      background-image: $_preload-image-urls;
+    }
+  } @else {
+    $_preload-image-list: join($preload, $_preload-image-list) !global;
+    $image-urls: ();
+    @if length($_preload-image-list) > 0 {
+      @for $i from 1 through length($_preload-image-list) {
+        $image: nth($_preload-image-list, $i);
+        $image-urls: join(url(#{$image}), $image-urls);
+      }
+    }
+    $result: ();
+    @each $item in $image-urls {
+      @if not index($result, $item) {
+        $result: append($result, $item, comma);
+      }
+    }
+    $_preload-image-urls: $result !global;
+  }
+}
+
+@mixin sf-component-set ($placeholder) {
+  %#{$placeholder} {
+    @content;
+  }
+}
+
+@mixin sf-component-get ($placeholder) {
+  @extend %#{$placeholder};
+}
+
+@mixin sf-styles ($styles, $values: (), $defaults: (),$exclude-values: ()) {
+  @if (not is-map($styles)) {
+    $styles: sf-assign-defaults($styles, $values, $defaults);
+  }
+
+  @if (not is-list($exclude-values)) { $exclude-values: ($exclude-values,); }
+
+  @each $property, $value in $styles {
+    @if (is-null(index($exclude-values, $value))) {
+      #{$property}: $value;
+    }
+  }
+}
+
+@mixin sf-position ($positions) {
+  $positions: sf-assign-defaults(top right bottom left, $positions, (auto auto auto auto));
+  @include sf-styles(
+    top right bottom left,
+    $positions,
+    $defaults: (top: auto, right: auto, bottom: auto, left: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-positions ($args...) { @include sf-position($args...); }
+
+@mixin sf-x-margin ($margins) {
+  $margins: sf-prefix-set($margins, margin-);
+  @include sf-styles(
+    margin-left margin-right,
+    $margins,
+    $defaults: (margin-left: auto, margin-right: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-x-margins ($args...) { @include sf-x-margin($args...); }
+
+@mixin sf-y-margin ($margins) {
+  $margins: sf-prefix-set($margins, margin-);
+  @include sf-styles(
+    margin-top margin-bottom,
+    $margins,
+    $defaults: (margin-top: auto, margin-bottom: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-y-margins ($args...) { @include sf-y-margin($args...); }
+
+@mixin sf-margin ($margins) {
+  $margins: sf-prefix-set($margins, margin-);
+  @include sf-styles(
+    margin-top margin-right margin-bottom margin-left,
+    $margins,
+    $defaults: (margin-top: auto, margin-right: auto, margin-bottom: auto, margin-left: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-margins ($args...) { @include sf-margin($args...); }

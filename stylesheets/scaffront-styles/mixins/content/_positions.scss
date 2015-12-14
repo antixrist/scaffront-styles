@@ -1,0 +1,137 @@
+//*********************************************
+//    Framework/Mixins/Content/Side positions
+//*********************************************
+
+@import "sassdash";
+@import "sassy-validation";
+
+@mixin sf-smart-position ($position, $offset: null, $sizes: null) {
+  $position-x-allowed: center left outer-left right outer-right;
+  $position-y-allowed: center outer-top top outer-bottom bottom;
+
+  $position: sf-assign(x y, $position);
+  $position-x: unquote(map-get($position, x));
+  $position-y: unquote(map-get($position, y));
+
+  @if ($position-x == center and not $position-y) {
+    $position: map-set($position, y, center);
+    $position-y: map-get($position, y);
+  }
+
+  $position: map-merge($position, (
+    y: map-get($position, x),
+    x: map-get($position, y)
+  ));
+
+  @if (index($position-y-allowed, $position-x) and index($position-x-allowed, $position-y)) {
+    $position: map-merge($position, (y: $position-x, x: $position-y));
+    $position-x: map-get($position, x);
+    $position-y: map-get($position, y);
+  }
+
+  $good: true;
+  @if (not index($position-x-allowed, $position-x)) {
+    @warn('[sf-smart-position] Invalid horizontal position: "#{$position-x}". Allowed: #{inspect($position-x-allowed)}');
+    $good: false;
+  }
+  @if (not index($position-y-allowed, $position-y)) {
+    @warn('[sf-smart-position] Invalid vertical position: "#{$position-y}". Allowed: #{inspect($position-y-allowed)}');
+    $good: false;
+  }
+
+  @if ($good) {
+    $sizes: sf-assign-defaults(width height, $sizes, (width: 0, height: 0));
+    $width: map-get($sizes, width);
+    $width: if(is-measure-positive($width), $width, 0);
+    $height: map-get($sizes, height);
+    $height: if(is-measure-positive($height), $height, 0);
+    $sizes: map-merge($sizes, (
+      width: $width,
+      height: $height
+    ));
+
+    $offset: sf-assign-defaults(x y, $offset, (x: 0, y: 0));
+    @each $key, $value in $offset {
+      @if (not is-number($value) and not is-measure($value)) {
+        $offset: map-set($offset, $key, 0);
+      }
+    }
+    $offset-x: map-get($offset, x);
+    $offset-y: map-get($offset, y);
+
+    //sizes: $sizes;
+    //offset: $offset;
+    //position: $position;
+
+    $_margins: ();
+    $_positions: ();
+    $_translate: (x: 0, y: 0);
+
+    @if ($position-x == center) {
+      $_positions: map-set($_positions, left, 50%);
+      $_margins: map-set($_margins, left, $offset-x);
+
+      @if (is-positive(strip-units($width))) {
+        // если ширина есть, то офсетом будет ((минус половина ширины) + текущий офсет)
+        $_margins: map-set($_margins, left, -$width/2 + $offset-x);
+      } @else {
+        // иначе сдвигаем translate'ом
+        $_translate: map-set($_translate, x, -50%);
+      }
+    } @elseif ($position-x == left) {
+      $_positions: map-set($_positions, left, 0);
+      $_margins: map-set($_margins, left, $offset-x);
+    } @elseif ($position-x == outer-left) {
+      $_positions: map-set($_positions, right, 100%);
+      $_margins: map-set($_margins, right, $offset-x);
+    } @elseif ($position-x == right) {
+      $_positions: map-set($_positions, right, 0);
+      $_margins: map-set($_margins, right, $offset-x);
+    } @elseif ($position-x == outer-right) {
+      $_positions: map-set($_positions, left, 100%);
+      $_margins: map-set($_margins, left, $offset-x);
+    }
+
+    @if ($position-y == center) {
+      $_positions: map-set($_positions, top, 50%);
+      $_margins: map-set($_margins, top, $offset-y);
+
+      @if (is-positive(strip-units($height))) {
+        // если высота есть, то офсетом будет ((минус половина высоты) + текущий офсет)
+        $_margins: map-set($_margins, top, -$height/2 + $offset-y);
+      } @else {
+        // иначе сдвигаем translate'ом
+        $_translate: map-set($_translate, y, -50%);
+      }
+    } @elseif ($position-y == top) {
+      $_positions: map-set($_positions, top, 0);
+      $_margins: map-set($_margins, top, $offset-y);
+    } @elseif ($position-y == outer-top) {
+      $_positions: map-set($_positions, bottom, 100%);
+      $_margins: map-set($_margins, bottom, $offset-y);
+    } @elseif ($position-y == bottom) {
+      $_positions: map-set($_positions, bottom, 0);
+      $_margins: map-set($_margins, bottom, $offset-y);
+    } @elseif ($position-y == outer-bottom) {
+      $_positions: map-set($_positions, top, 100%);
+      $_margins: map-set($_margins, top, $offset-y);
+    }
+
+    //_margins: $_margins;
+    //_positions: $_positions;
+    //_translate: $_translate;
+
+    position: absolute;
+    @include sf-positions($_positions);
+    @include sf-margins($_margins);
+
+    $translate-x: map-get($_translate, x);
+    $translate-y: map-get($_translate, y);
+    @if (not is-zero($translate-x) or not is-zero($translate-y)) {
+      transform: translate($translate-x, $translate-y);
+    }
+  }
+}
+
+@mixin sf-smart-positions ($args...) { @include sf-smart-position($args...); }
+

@@ -17,6 +17,7 @@ $is-success: unquote('&.is-success') !default;
   background-image: none;
   border-style: solid;
   border-color: transparent;
+  border-radius: 0;
   text-align: left;
   vertical-align: middle;
 
@@ -107,7 +108,7 @@ $input-color-border-hover: darken($input-color-border-normal, 3) !default;
 $input-color-border-focus: darken($input-color-border-normal, 3) !default;
 $input-color-border-active: darken($input-color-border-hover, 3) !default;
 $input-border-radius: 3px !default;
-@mixin input-variant (
+@mixin sf-input-variant (
   $color-normal: $input-color-normal,
   $color-hover: $input-color-hover,
   $color-focus: $input-color-focus,
@@ -177,5 +178,17 @@ $input-border-radius: 3px !default;
   #{$inputs} {
     display: block;
     width: 100%;
+  }
+}
+
+
+@mixin sf-input-placeholder () {
+  &::-webkit-input-placeholder,
+  &::-moz-placeholder,
+  &:-moz-placeholder,
+  &:-ms-input-placeholder,
+  &::placeholder,
+  &:placeholder {
+    @content;
   }
 }

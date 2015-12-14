@@ -2,25 +2,10 @@
 //    Common
 //*********************************************
 
-@mixin e ($names...) {
-  @if length($names) {
-    @for $i from 1 through length($names) {
-      @at-root &__#{nth($names, $i)} {
-        @content;
-      }
-    }
-  }
-}
-
-@mixin m ($names...) {
-  @if length($names) {
-    @for $i from 1 through length($names) {
-      @at-root &--#{nth($names, $i)} {
-        @content;
-      }
-    }
-  }
-}
+@import 'SassyLists';
+@import 'sassy-maps';
+@import 'sassdash';
+@import 'sassy-validation';
 
 @function sf-trim ($string) {
   $result: $string;
@@ -61,7 +46,7 @@
   @return $result;
 }
 
-@function sf-explode($glue, $string, $separator: comma) {
+@function sf-explode ($glue, $string, $separator: comma) {
   @if (type-of($string) != string) {
     $string: inspect($string);
     @warn('[sf-explode] Not a string! $string: "#{$string}"');
@@ -101,7 +86,7 @@
   @return $result;
 }
 
-@function sf-selector-without-placeholders($selector) {
+@function sf-selector-without-placeholders ($selector) {
   $list: sl-to-list($selector, ',');
   $result: ();
 
@@ -126,7 +111,7 @@
   @return $string;
 }
 
-@function sf-join-pathes($pathes...) {
+@function sf-join-pathes ($pathes...) {
   $result: sf-implode('/', $pathes);
   $result: sf-str-replace($result, '//', '/');
   $result: sf-str-replace($result, '//', '/');
@@ -134,7 +119,7 @@
   @return $result;
 }
 
-@function sf-is-true($input) {
+@function sf-is-true ($input) {
   $result: false;
   @if ($input == true or $input == 1) {
     $result: true;
@@ -152,12 +137,118 @@
   @return unquote($important);
 }
 
-@mixin sf-component-set ($placeholder) {
-  %#{$placeholder} {
-    @content;
+@function is-zero ($var) {
+  @if ((is-number($var) or is-measure($var)) and strip-units($var) == 0) {
+    @return true;
   }
+
+  @return false;
 }
 
-@mixin sf-component-get ($placeholder) {
-  @extend %#{$placeholder};
+@function is-arglist ($var) {
+  @return type-of($var) == arglist;
+}
+
+@function is-trusty ($var) {
+  @if ((is-map($var) or is-list($var) or is-arglist($var)) and not is-empty($var)) {
+    @return true;
+  } @elseif (is-string($var) and not is-empty($var)) {
+    @return true;
+  } @elseif (is-number($var) and is-positive($var)) {
+    @return true;
+  } @elseif (is-measure($var) and is-measure-positive($var)) {
+    @return true;
+  }
+
+  @return false;
+}
+
+@function sf-assign ($properties, $values) {
+  @if (not is-list($properties)) {
+    $properties: ($properties,);
+  }
+
+  @if (is-list($values)) {
+    $values: _flatten($values, true);
+  } @elseif (not is-map($values)) {
+    $values: ($values,);
+  }
+
+  $result: ();
+  $propertiesLength: length($properties);
+  $valuesLength: length($values);
+
+  @if (is-map($values)) {
+    @each $property in $properties {
+      $value: map-get($values, $property);
+      @if (not is-null($value)) {
+        $result: map-set($result, $property, $value);
+      }
+    }
+  } @else {
+    @each $property in $properties {
+      $propertyIndex: index($properties, $property);
+      @if ($propertyIndex <= $valuesLength) {
+        $result: map-set($result, $property, nth($values, $propertyIndex));
+      }
+    }
+  }
+
+  @return $result;
+}
+
+@function sf-assign-defaults ($properties: (), $values: (), $defaults: null) {
+  $result: sf-assign($properties, $values);
+
+  @if (is-map($defaults)) {
+    $result: _defaults($result, $defaults);
+  }
+
+  @return $result;
+}
+
+@function sf-list-set-prefix ($list, $prefix: '') {
+  @if (not is-list($list) or not is-string($prefix) or is-empty($prefix)) {
+    @return $list;
+  }
+
+  $list: _flatten($list);
+
+  $prefix: unquote($prefix);
+  $index: 0;
+  @each $value in $list {
+    $index: $index + 1;
+    @if (is-string($value)) {
+      $value: if(str-index($value, $prefix) == 1, $value, str-insert($value, $prefix, 1));
+      $list: set-nth($list, $index, $value);
+    }
+  }
+
+  @return $list;
+}
+
+@function sf-map-set-key-prefix ($map, $prefix: '') {
+  @if (not is-map($map) or not is-string($prefix) or is-empty($prefix)) {
+    @return $map;
+  }
+
+  $result: ();
+  $prefix: unquote($prefix);
+  @each $key, $value in $map {
+    $key: if(str-index($key, $prefix) == 1, $key, str-insert($key, $prefix, 1));
+    $result: map-set($result, $key, $value);
+  }
+
+  @return $result;
+}
+
+@function sf-prefix-set ($var, $prefix: '') {
+  @if (is-map($var)) {
+    @return sf-map-set-key-prefix($var, $prefix);
+  } @else {
+    $var: if(not is-list($var), ($var,), $var);
+    @return sf-list-set-prefix($var, $prefix);
+  }
+
+  @return $var;
 }

@@ -32,6 +32,10 @@
     "sass-toolkit": "*",
     "sass-units-transform": "*",
     "chroma": "~1.2.1",
-    "normalize-scss": "normalize.scss#~4.0.3"
+    "normalize-scss": "normalize.scss#~4.0.3",
+    "reset-scss": "*",
+    "color-me-sass": "*",
+    "sassdash": "~0.8.0",
+    "sassy-validation": "~0.4.0"
   }
 }
