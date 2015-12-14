@@ -1,13 +1,12 @@
 $tahomaStack: sf-fonts-stack(tahoma);
 
 $fonts: (
-  //(name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
+  //(name: ptsans, type: regular,     weight: 400, style: normal, stack: "PTSans" $tahomaStack),
   //(name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
   //(name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
   //(name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
 ) !default;
 
-
-@if (type-of($fonts) == map or type-of($fonts) == list) {
+@if (is-map($fonts) or is-list($fonts)) {
   $sf-fonts: sf-fonts-add($fonts);
 }

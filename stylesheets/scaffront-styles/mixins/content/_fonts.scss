@@ -3,6 +3,7 @@
 //*********************************************
 
 @import 'SassyLists';
+@import 'sassdash';
 
 // глобальная переменная. в неё будут добавляться все шрифты и из неё же извлекаться
 $sf-fonts: ();
@@ -30,36 +31,31 @@ $sf-fonts-types: (
 
 
 @function sf-fonts-add ($fonts) {
-  @if (type-of($fonts) != list and type-of($fonts) != map) {
-    @return $sf-fonts;
-  }
-
   $_fonts: $fonts;
 
-  // нам нужен list шрифтов.
-  // если пришёл обычный map, то надо завернуть его в список
-  @if (type-of($_fonts) == map and map-has-key($_fonts, name) and map-has-key($_fonts, stack)) {
+  @if (not is-list($_fonts)) {
     $_fonts: ($_fonts,);
   }
 
   @each $font in $_fonts {
-    @if (type-of($font) == map && map-has-key($font, name) and map-has-key($font, stack)) {
+    @if (is-map($font) and map-has-key($font, name) and map-has-key($font, stack)) {
+      $name: map-get($font, name);
+      $type: if(map-has-key($font, type), map-get($font, type), regular);
+      $type: if(not is-null(map-get($sf-fonts-types, $type)), $type, regular);
+      $type: unquote($type);
 
-      @if (map-has-key($font, type) != true) {
-        $font: map-merge($font, (type: regular));
-      }
-      @if (map-has-key($font, weight) != true) {
-        $font: map-merge($font, (weight: 400));
-      }
-      @if (map-has-key($font, style) != true) {
-        $font: map-merge($font, (style: normal));
-      }
+      $stack: _flatten(map-get($font, stack));
 
-      $stack: map-get($font, stack);
-      $stack: sl-to-list($stack);
-      $font: map-merge($font, (stack: $stack));
+      $options: _defaults((
+        stack:  $stack,
+        weight: unquote(map-get($font, weight)),
+        style:  unquote(map-get($font, style))
+      ), map-get($sf-fonts-types, $type));
 
-      $sf-fonts: append($sf-fonts, $font) !global;
+      $_font:  if(map-has-key($sf-fonts, $name), map-get($sf-fonts, $name), ());
+      $_types: map-set($_font, $type, $options);
+      // @return $options;
+      $sf-fonts: map-set($sf-fonts, $name, $_types) !global;
     }
   }
 
@@ -67,64 +63,53 @@ $sf-fonts-types: (
 }
 
 @function sf-fonts-get ($name, $type: regular) {
-  @each $font in $sf-fonts {
-    @if (map-get($font, name) == $name and map-get($font, type) == $type) {
-      @return $font;
-    }
-  }
-
-  @return null;
+  @return map-get-deep($sf-fonts, $name, $type);
 }
 
-@function sf-fonts-stack ($name, $type: regular, $to-string: true) {
-  $font: sf-fonts-get($name, $type);
-  $stack: ();
-
-  @if ($font != null) {
-    $stack: map-get($font, stack);
-
-    @if (sf-is-true($to-string)) {
-      $stack: unquote('"#{sl-to-string($stack, '", "')}"');
-    } @else {
-      $stack: sl-to-list($stack);
-    }
+@function _sf-fonts-get-stack ($var) {
+  @if (not is-null($var)) {
+    $stack: if(is-map($var), map-get($var, stack), $var);
+    @return if(not is-null($stack), sl-to-list($stack, comma), null);
   }
+}
 
-  @return $stack;
+@function sf-fonts-get-stack ($name, $type: regular) {
+  $font-data: map-get-deep($sf-fonts, $name, $type);
+  @return _sf-fonts-get-stack($font-data);
 }
 
 @mixin sf-font ($name, $type: regular) {
-  $font: sf-fonts-get($name, $type);
+  $font-data: sf-fonts-get($name, $type);
 
-  @if ($font != null) {
-    font-family: sf-implode(', ', map-get($font, stack));
-    font-weight: map-get($font, weight);
-    font-style: map-get($font, style);
+  @if (not is-null($font-data)) {
+    font-family: _sf-fonts-get-stack($font-data);
+    font-weight: map-get($font-data, weight);
+    font-style: map-get($font-data, style);
   }
-}
+};
 
 
 // добавим стандартные безопасные стеки шрифтов
 @each $name, $stack in $sf-fonts-safe {
-  @each $font-type in $sf-fonts-types {
+  @each $type, $options in $sf-fonts-types {
     $font: (
       name:   $name,
       stack:  $stack,
-      type:   map-get($font-type, 'type'),
-      weight: map-get($font-type, 'weight'),
-      style:  map-get($font-type, 'style')
+      type:   $type,
+      weight: map-get($options, weight),
+      style:  map-get($options, style)
     );
     $sf-fonts: sf-fonts-add($font);
   }
 }
 
 // и, не отходя от кассы, добавим популярные веб-шрифты
-$tahomaStack: sf-fonts-stack(tahoma);
+$tahomaStack: sf-fonts-get-stack(tahoma);
 
 $sf-fonts: sf-fonts-add((
-  (name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
-  (name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
-  (name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
-  (name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
+  (name: ptsans, type: regular,     stack: sl-prepend($tahomaStack, "PTSans")),
+  (name: ptsans, type: italic,      stack: sl-prepend($tahomaStack, "PTSansItalic")),
+  (name: ptsans, type: bold,        stack: sl-prepend($tahomaStack, "PTSansBold")),
+  (name: ptsans, type: bold-italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
 ));
 
