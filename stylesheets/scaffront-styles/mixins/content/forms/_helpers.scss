@@ -7,15 +7,14 @@ $base-line-height:  24px !default;
 
 @import 'sass-units-transform';
 
+$inputs-like-text-types: text email number password search tel url color date datetime datetime-local month time week !default;
 $inputs-like-text: ();
-$inputs-like-text-types: text email number password search tel url color date datetime datetime-local month time week;
 
 @each $type in $inputs-like-text-types {
-  $inputs-text: append($inputs-like-text, unquote('input[type=#{$type}]'));
+  $inputs-like-text:  append($inputs-like-text, unquote('input[type=#{$type}]'), comma);
 }
-$inputs-text: append($inputs-like-text, textarea);
-$inputs-text: append($inputs-text, select);
-
+$inputs-like-text:    append($inputs-like-text, textarea, comma);
+$inputs-like-text:    append($inputs-like-text, select,   comma);
 
 @mixin sf-control-background ($color, $direction: bottom, $fallback: true) {
   @if (type-of($color) == color) {
