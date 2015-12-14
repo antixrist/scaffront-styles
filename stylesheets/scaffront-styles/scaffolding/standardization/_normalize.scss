@@ -1,17 +1,25 @@
-// The font size set on the root html element.
-$base-font-size: 16px !default;
+$support-for: (
+  chrome:  -4,
+  edge:    -4,
+  firefox: -4,
+  ie:      8,
+  opera:   -4,
+  safari:  -4,
+  '*':     -4,
+) !default;
 
-// The base line height determines the basic unit of vertical rhythm.
+$base-box-sizing: border-box !default;
+$base-font-size: 14px !default;
 $base-line-height: 24px !default;
-
-// The length unit in which to output vertical rhythm values.
-// Supported values: px, em, rem.
-$base-unit: 'em' !default;
-
-// The default font family.
 $base-font-family: sans-serif !default;
+$base-color: #3b3b3b !default;
+$base-selection-color: #b3d4fc !default;
+$base-selection-background: $base-color !default;
+$base-hr-color: #ccc !default;
+$base-hr-height: 1px !default;
+$base-unit: 'px' !default;
+$base-gutter: $base-font-size !default;
 
-// The font sizes for h1-h6.
 $h1-font-size: 2    * $base-font-size !default;
 $h2-font-size: 1.5  * $base-font-size !default;
 $h3-font-size: 1.17 * $base-font-size !default;
@@ -20,7 +28,7 @@ $h5-font-size: 0.83 * $base-font-size !default;
 $h6-font-size: 0.67 * $base-font-size !default;
 
 // The amount lists and blockquotes are indented.
-$indent-amount: 40px !default;
+$indent-amount: $base-gutter !default;
 
 // The following variable controls whether normalize-scss will output
 // font-sizes, line-heights and block-level top/bottom margins that form a basic
@@ -28,5 +36,6 @@ $indent-amount: 40px !default;
 // However, changing any of the variables above will cause
 // $normalize-vertical-rhythm to be automatically set to true.
 $normalize-vertical-rhythm: false !default;
+
 
 @import 'normalize/import-now';

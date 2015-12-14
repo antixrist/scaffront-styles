@@ -1,0 +1,131 @@
+$base-box-sizing: border-box !default;
+$base-font-size: 14px !default;
+$base-line-height: 24px !default;
+$base-font-family: sans-serif !default;
+$base-color: #3b3b3b !default;
+$base-selection-color: #b3d4fc !default;
+$base-selection-background: $base-color !default;
+$base-hr-color: #ccc !default;
+$base-hr-height: 1px !default;
+$base-gutter: $base-font-size !default;
+
+
+html {
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  color: $base-color;
+  -ms-overflow-style: -ms-autohiding-scrollbar; // Edge 12+, Internet Explorer 11-
+  overflow-y: scroll; // All browsers without overlaying scrollbars
+}
+
+*,
+::before,
+::after {
+  box-sizing: $base-box-sizing;
+  border-style: solid;
+  border-width: 0;
+}
+
+* {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+::before,
+::after {
+  text-decoration: inherit;
+  vertical-align: inherit;
+}
+
+audio:not([controls]) {
+  display: none; // Chrome 44-, iOS 8+, Safari 9+
+}
+
+details {
+  display: block; // Edge 12+, Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+
+}
+
+input {
+  -webkit-border-radius: 0; // iOS 8+
+
+  &[type="button"], &[type="reset"], &[type="submit"] {
+    -webkit-appearance: button; // iOS 8+
+  }
+
+  &[type="number"] {
+    width: auto; // Firefox 36+
+  }
+}
+
+[aria-busy="true"] {
+  cursor: progress;
+}
+
+// specify the pointer cursor of trigger elements
+[aria-controls] {
+  cursor: pointer;
+}
+
+// specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements
+[aria-disabled] {
+  cursor: default;
+}
+
+// specify the style of visually hidden yet accessible elements
+[hidden][aria-hidden="false"] {
+  clip: rect(0 0 0 0);
+  display: inherit;
+  position: absolute;
+
+  &:focus {
+    clip: auto;
+  }
+}
+
+@include sf-selection (
+  $color: $base-selection-color,
+  $background: $base-selection-background,
+  $selector: false
+);
+
+hr {
+  @include sf-hr($color: $base-hr-color, $height: $base-hr-height);
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+textarea {
+  resize: vertical;
+}
+
+* > *:first-child {
+  margin-top: 0;
+}
+* > *:last-child {
+  margin-bottom: 0;
+}

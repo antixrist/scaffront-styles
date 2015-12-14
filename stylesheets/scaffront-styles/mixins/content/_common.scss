@@ -2,6 +2,9 @@
 //    Framework/Mixins/Content/Common
 //*********************************************
 
+$base-font-size: 14px !default;
+$base-gutter: $base-font-size !default;
+
 @import 'sassy-maps';
 @import 'sassdash';
 @import 'sassy-validation';
@@ -56,7 +59,7 @@
   $background: #363636,
   $selector: '&'
 ) {
-  @if ($selector == false or $selector == false or $selector == '') {
+  @if ($selector == false or $selector == null or $selector == '') {
     $selector: '';
   }
   $selector: unquote($selector);
@@ -96,6 +99,74 @@
 
   visibility: hidden $important;
 }
+
+@mixin sf-pull-left ($important: false) {
+  $important: sf-important($important);
+
+  float: left $important;
+}
+
+@mixin sf-pull-right ($important: false) {
+  $important: sf-important($important);
+
+  float: left $important;
+}
+
+@mixin sf-text-left ($important: false) {
+  $important: sf-important($important);
+
+  text-align: left $important;
+}
+
+@mixin sf-text-center ($important: false) {
+  $important: sf-important($important);
+
+  text-align: center $important;
+}
+
+@mixin sf-text-right ($important: false) {
+  $important: sf-important($important);
+
+  text-align: right $important;
+}
+
+@mixin sf-block ($important: false) {
+  $important: sf-important($important);
+
+  display: block $important;
+}
+
+@mixin sf-block-center () {
+  display: block;
+  margin-left   : auto;
+  margin-right  : auto;
+}
+
+@mixin content-image (
+  $gutter: $base-gutter,
+  $gutter-y-ratio: 2,
+  $selector-left: '&[align=left], &.pull-left, .text-left &',
+  $selector-center: '&[align=center], &[align=middle], &.center, .text-center &',
+  $selector-right: '&[align=right], &.pull-right, .text-right &'
+) {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+
+  #{$selector-left} {
+    margin-right: $base-gutter;
+    margin-bottom: $base-gutter / $gutter-y-ratio;
+  }
+  #{$selector-right} {
+    margin-left: $base-gutter;
+    margin-bottom: $base-gutter / $gutter-y-ratio;
+  }
+  #{$selector-center} {
+    @include sf-block-center;
+    margin-bottom: $base-gutter / $gutter-y-ratio;
+  }
+}
+
 
 /*
  * Hide only visually, but have it available for screen readers:
@@ -289,3 +360,39 @@ $_preload-image-urls:     () !default;
 }
 
 @mixin sf-margins ($args...) { @include sf-margin($args...); }
+
+@mixin sf-x-padding ($paddings) {
+  $paddings: sf-prefix-set($paddings, padding-);
+  @include sf-styles(
+    padding-left padding-right,
+    $paddings,
+    $defaults: (padding-left: auto, padding-right: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-x-paddings ($args...) { @include sf-x-padding($args...); }
+
+@mixin sf-y-padding ($paddings) {
+  $paddings: sf-prefix-set($paddings, padding-);
+  @include sf-styles(
+    padding-top padding-bottom,
+    $paddings,
+    $defaults: (padding-top: auto, padding-bottom: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-y-paddings ($args...) { @include sf-y-padding($args...); }
+
+@mixin sf-padding ($paddings) {
+  $paddings: sf-prefix-set($paddings, padding-);
+  @include sf-styles(
+    padding-top padding-right padding-bottom padding-left,
+    $paddings,
+    $defaults: (padding-top: auto, padding-right: auto, padding-bottom: auto, padding-left: auto),
+    $exclude-values: null auto
+  );
+}
+
+@mixin sf-paddings ($args...) { @include sf-padding($args...); }
