@@ -17,13 +17,14 @@ $is-success:  unquote('&.is-success') !default;
 @mixin sf-btn () {
   appearance: none;
   display: inline-block;
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
   text-align: center;
   vertical-align: middle;
   text-decoration: none;
   touch-action: manipulation;
   cursor: pointer;
-  background-image: none;
   border-style: solid;
   border-color: transparent;
   white-space: nowrap;
