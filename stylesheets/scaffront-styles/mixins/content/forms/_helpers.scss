@@ -16,6 +16,7 @@ $inputs-like-text: ();
 $inputs-like-text:    append($inputs-like-text, textarea, comma);
 $inputs-like-text:    append($inputs-like-text, select,   comma);
 
+
 @mixin sf-control-background ($color, $direction: bottom, $fallback: true) {
   @if (type-of($color) == color) {
     background: $color;
