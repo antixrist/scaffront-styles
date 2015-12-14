@@ -2,7 +2,20 @@
 //    Content/Forms Helpers
 //*********************************************
 
+$base-font-size:    14px !default;
+$base-line-height:  24px !default;
+
 @import 'sass-units-transform';
+
+$inputs-like-text: ();
+$inputs-like-text-types: text email number password search tel url color date datetime datetime-local month time week;
+
+@each $type in $inputs-like-text-types {
+  $inputs-text: append($inputs-like-text, unquote('input[type=#{$type}]'));
+}
+$inputs-text: append($inputs-like-text, textarea);
+$inputs-text: append($inputs-text, select);
+
 
 @mixin sf-control-background ($color, $direction: bottom, $fallback: true) {
   @if (type-of($color) == color) {
@@ -69,9 +82,6 @@
   @return sf-bounds($data, $prefix);
 }
 
-
-$base-font-size:    14px !default;
-$base-line-height:  24px !default;
 
 @function sf-control-sizes(
   $height:        auto,

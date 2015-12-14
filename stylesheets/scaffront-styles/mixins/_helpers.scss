@@ -252,3 +252,22 @@
 
   @return $var;
 }
+
+@function sf-merge-selectors ($list1: (), $list2: ()) {
+  @if (type-of($list1) != list) {
+    $list1: ($list1,);
+  }
+  @if (type-of($list2) != list) {
+    $list2: ($list2,);
+  }
+
+  $result: ();
+  @each $selector1 in $list1 {
+    // $selector: unquote($selector1);
+    @each $selector2 in $list2 {
+      $result: append($result, #{unquote($selector1)}#{unquote($selector2)}, comma);
+    }
+  }
+
+  @return $result;
+}
