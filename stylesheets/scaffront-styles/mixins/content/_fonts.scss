@@ -44,12 +44,16 @@ $sf-fonts-types: (
       $type: if(not is-null(map-get($sf-fonts-types, $type)), $type, regular);
       $type: unquote($type);
 
-      $stack: _flatten(map-get($font, stack));
+      $stack:   _flatten(map-get($font, stack));
+      $weight:  map-get($font, weight);
+      $weight:  if(is-string($weight), unquote($weight), $weight);
+      $style:   map-get($font, style);
+      $style:   if(is-string($style), unquote($style), $style);
 
       $options: _defaults((
         stack:  $stack,
-        weight: unquote(map-get($font, weight)),
-        style:  unquote(map-get($font, style))
+        weight: $weight,
+        style:  $style
       ), map-get($sf-fonts-types, $type));
 
       $_font:  if(map-has-key($sf-fonts, $name), map-get($sf-fonts, $name), ());

@@ -2,14 +2,17 @@
 //    Framework/Mixins/Content/Links
 //*********************************************
 
-$is-hovered: unquote('&:hover, &.is-hovered') !default;
-$is-focused: unquote('&:focus, &.is-focused') !default;
-$is-active: unquote('&:active, &.is-active') !default;
-$is-visited: unquote('&:visited, &.is-visited') !default;
+$base-font-size:    14px !default;
+$base-line-height:  24px !default;
+
+$is-hovered:  unquote('&:hover, &.is-hovered') !default;
+$is-focused:  unquote('&:focus, &.is-focused') !default;
+$is-active:   unquote('&:active, &.is-active') !default;
+$is-visited:  unquote('&:visited, &.is-visited') !default;
 $is-required: unquote('&.is-required, &[required]') !default;
 $is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !default;
-$is-error: unquote('&.is-error') !default;
-$is-success: unquote('&.is-success') !default;
+$is-error:    unquote('&.is-error') !default;
+$is-success:  unquote('&.is-success') !default;
 
 @mixin link (
   $color-normal,
@@ -144,6 +147,6 @@ $is-success: unquote('&.is-success') !default;
   }
 };
 
-@mixin link-pseudo () {
+@mixin link--pseudo () {
   border-style: dashed;
 }
