@@ -2,7 +2,7 @@ $base-font-size: 14px !default;
 $base-gutter: $base-font-size !default;
 
 img {
-  @include content-image(
+  @include sf-content-image(
     $gutter: $base-gutter,
     $gutter-y-ratio: 2,
     $selector-left: '&[align=left], &.pull-left, .text-left &',

@@ -1,0 +1,40 @@
+@mixin sf-vcenter-td ($selectors...) {
+  display: table;
+
+  $selectors: if(length($selectors) == 0, '*', $selectors);
+  @each $cell-selector in $selectors {
+    $cell-selector: unquote($cell-selector);
+    & > #{$cell-selector} {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+
+}
+
+@mixin sf-vcenter-ib ($selectors...) {
+  &:before {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    // A small negative right margin is set
+    // to account for the default
+    // word-spacing of inline-block.
+    margin-right: -0.25em;
+  }
+
+  $selectors: if(length($selectors) == 0, '*', $selectors);
+  @each $cell-selector in $selectors {
+    $cell-selector: unquote($cell-selector);
+    & > #{$cell-selector} {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+@mixin sf-vcenter-lh ($height) {
+  height: $height;
+  line-height: $height;
+}

@@ -142,7 +142,7 @@ $base-gutter: $base-font-size !default;
   margin-right  : auto;
 }
 
-@mixin content-image (
+@mixin sf-content-image (
   $gutter: $base-gutter,
   $gutter-y-ratio: 2,
   $selector-left: '&[align=left], &.pull-left, .text-left &',

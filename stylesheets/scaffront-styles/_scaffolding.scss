@@ -4,13 +4,12 @@
 @import 'toolkit';
 @import 'SassyLists';
 @import 'sass-units-transform';
+@import 'modernizr';
 
-@import 'scaffolding/normalizify';
+@import 'scaffolding/standardization';
 @import 'scaffolding/fonts';
 @import 'scaffolding/color-scheme';
-@import 'scaffolding/h5bp';
 @import 'scaffolding/carcass';
-@import 'scaffolding/typography';
 @import 'scaffolding/icons';
 @import 'scaffolding/links';
 @import 'scaffolding/buttons';

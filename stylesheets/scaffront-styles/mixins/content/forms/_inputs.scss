@@ -12,6 +12,7 @@ $is-error: unquote('&.is-error') !default;
 $is-success: unquote('&.is-success') !default;
 
 @mixin sf-input () {
+  appearance: none;
   display: inline-block;
   background-color: #fff;
   background-image: none;

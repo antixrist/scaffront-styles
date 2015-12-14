@@ -35,6 +35,7 @@
     "normalize-scss": "normalize.scss#~4.0.3",
     "color-me-sass": "*",
     "sassdash": "~0.8.0",
-    "sassy-validation": "~0.4.0"
+    "sassy-validation": "~0.4.0",
+    "modernizr-mixin": "~3.0.7"
   }
 }
