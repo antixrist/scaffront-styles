@@ -305,7 +305,7 @@ $_preload-image-urls:     () !default;
   @extend %#{$placeholder};
 }
 
-@mixin sf-styles ($styles, $values: (), $defaults: (),$exclude-values: ()) {
+@mixin sf-styles ($styles, $values: (), $defaults: (), $exclude-values: ()) {
   @if (not is-map($styles)) {
     $styles: sf-assign-defaults($styles, $values, $defaults);
   }

@@ -2,17 +2,21 @@
 //    Framework/Mixins/Content/Forms/Inputs
 //*********************************************
 
-$is-hovered: unquote('&:hover, &.is-hovered') !default;
-$is-focused: unquote('&:focus, &.is-focused') !default;
-$is-active: unquote('&:active, &.is-active') !default;
-$is-visited: unquote('&:visited, &.is-visited') !default;
+$base-font-size:    14px !default;
+$base-line-height:  24px !default;
+$base-color:        #3b3b3b !default;
+
+$is-hovered:  unquote('&:hover, &.is-hovered') !default;
+$is-focused:  unquote('&:focus, &.is-focused') !default;
+$is-active:   unquote('&:active, &.is-active') !default;
+$is-visited:  unquote('&:visited, &.is-visited') !default;
 $is-required: unquote('&.is-required, &[required]') !default;
 $is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !default;
-$is-error: unquote('&.is-error') !default;
-$is-success: unquote('&.is-success') !default;
+$is-error:    unquote('&.is-error') !default;
+$is-success:  unquote('&.is-success') !default;
 
 @mixin sf-input () {
-  appearance: none;
+  //appearance: none;
   display: inline-block;
   background-color: #fff;
   background-image: none;
@@ -21,6 +25,7 @@ $is-success: unquote('&.is-success') !default;
   border-radius: 0;
   text-align: left;
   vertical-align: middle;
+  outline: 0 none;
 
   #{$is-focused} {
     @include sf-unfocus();
@@ -43,47 +48,31 @@ $is-success: unquote('&.is-success') !default;
   }
 }
 
-$base-font-size: 14px !default;
-$base-line-height: 17px !default;
-$input-height: auto !default;
-$input-font-size: $base-font-size !default;
-$input-line-height: $base-line-height !default;
-$input-border-width: 1px !default;
-$input-padding-vertical: 5px !default;
-$input-padding-horizontal: 10px !default;
-$input-lines: 1 !default;
-$input-min-width: 200px !default;
-@mixin sf-input-size (
-  $height: $input-height,
-  $font-size: $input-font-size,
-  $line-height: $input-line-height,
-  $border-width: $input-border-width,
-  $padding-vertical: $input-padding-vertical,
-  $padding-horizontal: $input-padding-horizontal,
-  $lines: $input-lines,
-  $enlarge-by-ratio: false,
-  $reduce-by-ratio: false,
-  $min-width: $input-min-width
+@mixin sf-input--size (
+  $height:                auto,
+  $font-size:             $base-font-size,
+  $line-height:           $base-line-height,
+  $border-width:          1px,
+  $padding-vertical:      5px,
+  $padding-horizontal:    10px,
+  $lines:                 1,
+  $min-width:             200px
 ) {
-  $vertical-sizes: control-get-sizes(
-    $height: $height,
-    $font-size: $font-size,
-    $line-height: $line-height,
-    $border-width: $border-width,
-    $padding-vertical: $padding-vertical,
-    $padding-horizontal: $padding-horizontal,
-    $lines: $lines,
-    $enlarge-by-ratio: false,
-    $reduce-by-ratio: false
+  $vertical-sizes: sf-control-get-sizes(
+    $height:              $height,
+    $font-size:           $font-size,
+    $line-height:         $line-height,
+    $border-width:        $border-width,
+    $padding-vertical:    $padding-vertical,
+    $padding-horizontal:  $padding-horizontal,
+    $lines:               $lines,
+    $enlarge-by-ratio:    false,
+    $reduce-by-ratio:     false
   );
 
-  @include control-sizes(
-    $height: map-get($vertical-sizes, 'height'),
-    $font-size: map-get($vertical-sizes, 'font-size'),
-    $line-height: map-get($vertical-sizes, 'line-height'),
-    $border-width: map-get($vertical-sizes, 'border-width'),
-    $padding-vertical: map-get($vertical-sizes, 'padding-vertical'),
-    $padding-horizontal: map-get($vertical-sizes, 'padding-horizontal')
+  @include sf-styles(
+    height font-size line-height border-width padding-vertical padding-horizontal,
+    $vertical-sizes
   );
 
   min-width: $min-width;
@@ -95,42 +84,40 @@ $input-min-width: 200px !default;
   white-space: normal;
 }
 
-$base-color: #363636 !default;
-$input-color-normal: $base-color !default;
-$input-color-hover: $input-color-normal !default;
-$input-color-focus: $input-color-normal !default;
-$input-color-active: $input-color-normal !default;
-$input-color-bg-normal: #fff !default;
-$input-color-bg-hover: $input-color-bg-normal !default;
-$input-color-bg-focus: $input-color-bg-normal !default;
-$input-color-bg-active: $input-color-bg-normal !default;
-$input-color-border-normal: #ccc !default;
-$input-color-border-hover: darken($input-color-border-normal, 3) !default;
-$input-color-border-focus: darken($input-color-border-normal, 3) !default;
-$input-color-border-active: darken($input-color-border-hover, 3) !default;
-$input-border-radius: 3px !default;
-@mixin sf-input-variant (
-  $color-normal: $input-color-normal,
-  $color-hover: $input-color-hover,
-  $color-focus: $input-color-focus,
-  $color-active: $input-color-active,
-  $color-bg-normal: $input-color-bg-normal,
-  $color-bg-hover: $input-color-bg-hover,
-  $color-bg-focus: $input-color-bg-focus,
-  $color-bg-active: $input-color-bg-active,
-  $color-border-normal: $input-color-border-normal,
-  $color-border-hover: $input-color-border-hover,
-  $color-border-focus: $input-color-border-focus,
-  $color-border-active: $input-color-border-active,
-  $border-radius: $input-border-radius
+@mixin sf-input__placeholder () {
+  &::-webkit-input-placeholder  { @content; }
+  &::-moz-placeholder           { @content; }
+  &:-moz-placeholder            { @content; }
+  &:-ms-input-placeholder       { @content; }
+}
+
+@mixin sf-input--variant (
+  $color-normal:        $base-color,
+  $color-hover:         $color-normal,
+  $color-focus:         $color-hover,
+  $color-active:        $color-hover,
+  $color-bg-normal:     #fff,
+  $color-bg-hover:      $color-bg-normal,
+  $color-bg-focus:      $color-bg-normal,
+  $color-bg-active:     $color-bg-normal,
+  $color-border-normal: #ccc,
+  $color-border-hover:  darken($color-border-normal,10%),
+  $color-border-focus:  darken($color-border-normal, 20%),
+  $color-border-active: darken($color-border-normal, 20%),
+  $border-radius: 3px
 ) {
   color: $color-normal !important;
   border-color: $color-border-normal;
   border-radius: $border-radius;
 
   @include sf-control-background($color: $color-bg-normal, $direction: to bottom);
+  @include sf-input__placeholder() {
+    transition: opacity .1s ease-out;
+    color: $color-normal;
+    opacity: .7;
+  };
 
-  //  #{$btn-states-focused},
+  //#{$is-focused},
   #{$is-hovered} {
     color: $color-hover !important;
     border-color: $color-border-hover;
@@ -143,6 +130,9 @@ $input-border-radius: 3px !default;
     border-color: $color-border-focus;
 
     @include sf-control-background($color: $color-bg-focus, $direction: to bottom);
+    @include sf-input__placeholder() {
+      opacity: .9;
+    };
   }
 
   #{$is-active} {
@@ -182,14 +172,3 @@ $input-border-radius: 3px !default;
   }
 }
 
-
-@mixin sf-input-placeholder () {
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &:-moz-placeholder,
-  &:-ms-input-placeholder,
-  &::placeholder,
-  &:placeholder {
-    @content;
-  }
-}

@@ -1,10 +1,56 @@
-@import 'vars/base';
-@import 'vars/typography';
-@import 'vars/links';
-@import 'vars/buttons';
-@import 'vars/inputs';
-@import 'vars/controls-group';
-//@import 'vars/icons';
-//@import 'vars/carcass';
+$support-for: (
+  chrome:  -4,
+  edge:    -4,
+  firefox: -4,
+  ie:      8,
+  opera:   -4,
+  safari:  -4,
+  '*':     -4,
+) !default;
 
+$base-box-sizing: border-box !default;
+$base-font-size: 14px !default;
+$base-line-height: 24px !default;
+$base-font-family: sans-serif !default;
+$base-color: #3b3b3b !default;
+$base-selection-color: #b3d4fc !default;
+$base-selection-background: $base-color !default;
+$base-hr-color: #ccc !default;
+$base-hr-height: 1px !default;
+$base-gutter: $base-font-size !default;
+$base-gutter: $base-font-size !default;
+
+$base-unit: 'px' !default;
+
+$h1-font-size: 2    * $base-font-size !default;
+$h2-font-size: 1.5  * $base-font-size !default;
+$h3-font-size: 1.17 * $base-font-size !default;
+$h4-font-size: 1    * $base-font-size !default;
+$h5-font-size: 0.83 * $base-font-size !default;
+$h6-font-size: 0.67 * $base-font-size !default;
+
+// The amount lists and blockquotes are indented.
+$indent-amount: $base-gutter !default;
+
+// The following variable controls whether normalize-scss will output
+// font-sizes, line-heights and block-level top/bottom margins that form a basic
+// vertical rhythm on the page, which differs from the original Normalize.css.
+// However, changing any of the variables above will cause
+// $normalize-vertical-rhythm to be automatically set to true.
+$normalize-vertical-rhythm: false !default;
+
+$fonts: (
+  //(name: ptsans, type: regular, weight: 400, style: normal, stack: sl-prepend(sf-get-stack(tahoma), "PTSans")),
+) !default;
+
+$is-hovered:  unquote('&:hover, &.is-hovered') !default;
+$is-focused:  unquote('&:focus, &.is-focused') !default;
+$is-active:   unquote('&:active, &.is-active') !default;
+$is-visited:  unquote('&:visited, &.is-visited') !default;
+$is-required: unquote('&.is-required, &[required]') !default;
+$is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !default;
+$is-error:    unquote('&.is-error') !default;
+$is-success:  unquote('&.is-success') !default;
+
+$background-size-behavior: '/js/vendor/backgroundsize.min.htc' !default;
 

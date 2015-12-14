@@ -32,6 +32,59 @@
   }
 }
 
+@function sf-bounds ($data, $prefix: '') {
+  $data: sf-assign-defaults(top right bottom left, $data, (top: null, right: null, bottom: null, left: null));
+  $data: map-merge($data, (
+    right:  if(is-null(map-get($data, right)),  map-get($data, top),   map-get($data, right))
+  ));
+  $data: map-merge($data, (
+    bottom: if(is-null(map-get($data, bottom)), map-get($data, top),   map-get($data, bottom))
+  ));
+  $data: map-merge($data, (
+    left:   if(is-null(map-get($data, left)),   map-get($data, right), map-get($data, left))
+  ));
+
+  @return $data;
+}
+
+@function sf-bounds-qwe () {
+  
+}
+
+$base-font-size:    14px !default;
+$base-line-height:  24px !default;
+
+@function sf-control-height(
+  $height:        auto,
+  $font-size:     $base-font-size,
+  $line-height:   $base-line-height,
+  $border-width:  1px,
+  $padding:       0
+) {
+  $height:        unquote($height);
+  $font-size:     unquote($font-size);
+  $line-height:   unquote($line-height);
+  $padding:       unquote($padding);
+  $border-width:  unquote($border-width);
+
+  $height:        if(is-measure($height) and $height > 0, $height, null);
+  $font-size:     if(is-measure($font-size) and $font-size > 0, $font-size, null);
+  $line-height:   if(is-measure($line-height) and $line-height > 0, $line-height, null);
+
+  $paddings: sf-assign-defaults(top right bottom left, $padding, (top: null, right: null, bottom: null, left: null));
+  $paddings: map-merge($paddings, (
+    right:   if(is-null(map-get($paddings, right)),  map-get($paddings, top),    map-get($paddings, right))
+  ));
+  $paddings: map-merge($paddings, (
+    bottom:  if(is-null(map-get($paddings, bottom)), map-get($paddings, top),    map-get($paddings, bottom))
+  ));
+  $paddings: map-merge($paddings, (
+    left:    if(is-null(map-get($paddings, left)),   map-get($paddings, right),  map-get($paddings, left))
+  ));
+
+
+  @return $paddings;
+}
 
 @function sf-control-fit-to-height(
   $height,
@@ -136,7 +189,7 @@
   @return (height: $height);
 }
 
-@function control-get-sizes (
+@function sf-control-get-sizes(
   $font-size,
   $line-height,
   $border-width,
@@ -180,23 +233,30 @@
     ));
   }
 
+  $result: map-merge($result, (
+    padding-top:    map-get($result, $padding-vertical) /2,
+    padding-bottom: map-get($result, $padding-vertical) /2,
+    padding-left:   map-get($result, $padding-horizontal) /2,
+    padding-right:  map-get($result, $padding-horizontal) /2
+  ));
+
   @return $result;
 }
 
 
-@mixin control-sizes (
-  $height,
-  $font-size,
-  $line-height,
-  $padding-vertical,
-  $padding-horizontal,
-  $border-width
-) {
-  font-size: $font-size;
-  line-height: $line-height;
-  padding: $padding-vertical $padding-horizontal;
-  border-width: $border-width;
-  //height: $height;
-  min-height: $height;
-}
-
+//@mixin sf-control-sizes(
+//  $height,
+//  $font-size,
+//  $line-height,
+//  $padding-vertical,
+//  $padding-horizontal,
+//  $border-width
+//) {
+//  font-size: $font-size;
+//  line-height: $line-height;
+//  padding: $padding-vertical $padding-horizontal;
+//  border-width: $border-width;
+//  //height: $height;
+//  min-height: $height;
+//}
+//
