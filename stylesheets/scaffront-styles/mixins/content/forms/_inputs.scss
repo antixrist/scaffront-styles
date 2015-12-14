@@ -55,27 +55,26 @@ $is-success:  unquote('&.is-success') !default;
   $border-width:          1px,
   $padding-vertical:      5px,
   $padding-horizontal:    10px,
-  $lines:                 1,
+  //$lines:                 1,
   $min-width:             200px
 ) {
-  $vertical-sizes: sf-control-get-sizes(
-    $height:              $height,
-    $font-size:           $font-size,
-    $line-height:         $line-height,
-    $border-width:        $border-width,
-    $padding-vertical:    $padding-vertical,
-    $padding-horizontal:  $padding-horizontal,
-    $lines:               $lines,
-    $enlarge-by-ratio:    false,
-    $reduce-by-ratio:     false
+
+  $styles: sf-control-sizes(
+    $height:                $height,
+    $font-size:             $font-size,
+    $line-height:           $line-height,
+    $border-width:          $border-width,
+    $padding-vertical:      $padding-vertical,
+    $padding-horizontal:    $padding-horizontal
   );
 
-  @include sf-styles(
-    height font-size line-height border-width padding-vertical padding-horizontal,
-    $vertical-sizes
+  $styles: map-set(
+    $styles,
+    min-width,
+    if(is-measure($min-width) and $min-width > 0, $height, auto)
   );
 
-  min-width: $min-width;
+  @include sf-styles($styles, $exclude-values: null auto);
 }
 
 @mixin sf-input--block () {

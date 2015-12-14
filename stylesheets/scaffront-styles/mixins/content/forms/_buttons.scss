@@ -80,37 +80,38 @@ $is-success:  unquote('&.is-success') !default;
   $font-size:             $base-font-size,
   $line-height:           $base-line-height,
   $border-width:          1px,
-  $padding-vertical:      10px,
-  $padding-horizontal:    65px,
-  $lines:                 1,
+  $padding-vertical:      5px,
+  $padding-horizontal:    10px,
+  //$lines:                 1,
   $active-offset:         1px,
   $active-offset-type:    inner // inner/outer/false
 ) {
 
-  $vertical-sizes: sf-control-get-sizes(
-    $height:              $height,
-    $font-size:           $font-size,
-    $line-height:         $line-height,
-    $border-width:        $border-width,
-    $padding-vertical:    $padding-vertical,
-    $padding-horizontal:  $padding-horizontal,
-    $lines:               $lines,
-    $enlarge-by-ratio:    false,
-    $reduce-by-ratio:     false
+  $styles: sf-control-sizes(
+    $height:                $height,
+    $font-size:             $font-size,
+    $line-height:           $line-height,
+    $border-width:          $border-width,
+    $padding-vertical:      $padding-vertical,
+    $padding-horizontal:    $padding-horizontal
   );
 
-  @include sf-styles(
-    height font-size line-height border-width padding-vertical padding-horizontal,
-    $vertical-sizes
-  );
+  @include sf-styles($styles, $exclude-values: null auto);
 
   #{$is-active} {
     $active-type: unquote($active-offset-type);
 
     @if ($active-type == inner) {
-      $padding-vertical: map-get($vertical-sizes, 'padding-vertical');
-      padding-top: $padding-vertical + $active-offset;
-      padding-bottom: $padding-vertical - $active-offset;
+      $padding-top:     map-get($styles, padding-top);
+      $padding-bottom:  map-get($styles, padding-bottom);
+
+      @if (($padding-top + $active-offset) > 0) {
+        padding-top:    map-get($styles, padding-top)    + $active-offset;
+      }
+
+      @if (($padding-bottom - $active-offset) > 0) {
+        padding-bottom: map-get($styles, padding-bottom) + $active-offset;
+      }
     } @elseif ($active-type == outer) {
       position: relative;
       top: $active-offset;
