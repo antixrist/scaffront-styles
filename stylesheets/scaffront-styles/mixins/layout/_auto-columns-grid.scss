@@ -46,51 +46,92 @@
   }
 }
 
+@mixin sf-auto-columns-aside ($position, $gutter: 0, $gutter-style: 'margin') {
+  $direction: unquote($position);
+  $gutter-style: unquote($gutter-style);
+
+  float: $direction;
+  #{$gutter-style}-#{opposite-position($direction)}: $gutter;
+}
+
+@mixin sf-auto-columns-content () {
+  overflow: hidden;
+  display: block;
+}
+
+@mixin sf-auto-columns (
+  $selector-content,
+  $selector-aside-left,
+  $selector-aside-right,
+  $gutter: 0,
+  $gutter-style: 'margin'
+) {
+  @include sf-clearfix;
+
+  $selector-content: unquote($selector-content);
+  $selector-aside-left: unquote($selector-aside-left);
+  $selector-aside-right: unquote($selector-aside-right);
+
+  @if ($selector-content) {
+    & > #{$selector-content} {
+      @include sf-auto-columns-content();
+    }
+  }
+
+  @if ($selector-aside-left) {
+    & > #{$selector-aside-left} {
+      @include sf-auto-columns-aside($position: left, $gutter: $gutter, $gutter-style: $gutter-style);
+    }
+  }
+  @if ($selector-aside-right) {
+    & > #{$selector-aside-right} {
+      @include sf-auto-columns-aside($position: right, $gutter: $gutter, $gutter-style: $gutter-style);
+    }
+  }
+}
 
 /**
  * http://jsfiddle.net/alexriz/d5SUg/
  */
+@mixin sf-columns-auto (
+  $selector-aside-left: '.asides__left',
+  $selector-aside-right: '.asides__right',
+  $selector-aside-center: '.asides__center',
+  $gutter: 0
+) {
+  $box-left: unquote($selector-aside-left);
+  $box-right: unquote($selector-aside-right);
+  $box-content: unquote($selector-aside-center);
+  $gutter: if(is-measure($gutter), $gutter, 0);
 
-//<div class="box bfc-fix">
-//  <div class="box-side"></div>
-//  <div class="box-side_rt"></div>
-//  <div class="box-base bfc-fix"></div>
-//</div>
+  @if ($box-content and not is-empty($box-content)) {
+    #{$box-content} {
+      -height: 1%; /*IE6*/
+      *zoom: 1; /*IE6-7*/
+      display: table;
 
-//.box {
-//background: #eee;
-//padding: 5px;
-//}
-//.box-base {
-//  background: #ddd;
-//  padding: 50px;
-//}
-//.box-side {
-//  background: #ccc;
-//  float: left;
-//  margin-right: 5px;
-//  padding: 50px;
-//}
-//.box-side_rt {
-//  background: #bbb;
-//  float: right;
-//  padding: 50px;
-//  margin-right: 0;
-//  margin-left: 5px;
-//}
-//
-///* bfc-fix */
-//.bfc-fix {
-//  -height: 1%; /*IE6*/
-//  *zoom: 1; /*IE6-7*/
-//  display: table;
-//}
-//.bfc-fix:after {
-//  /*content: '1 1';*/  /*Op15+*/
-//  content: '1 1 1 1 1 1 1 1 1 1 1'; /*Op12+*/
-//  font: .1px/0 a;
-//  display: block;
-//  word-spacing: 99in;
-//  overflow: hidden; /*IE8-*/
-//}
-///* end bfc-fix */
+      &:after {
+        /*content: '1 1';*/
+        /*Op15+*/
+        content: '1 1 1 1 1 1 1 1 1 1 1'; /*Op12+*/
+        font: .1px/0 a;
+        display: block;
+        word-spacing: 99in;
+        overflow: hidden; /*IE8-*/
+      }
+    }
+  }
+  @if ($box-left and not is-empty($box-left)) {
+    #{$box-left} {
+      float: left;
+      margin-right: $gutter;
+    }
+  }
+
+  @if ($box-right and not is-empty($box-right)) {
+    #{$box-right} {
+      float: right;
+      margin-left: $gutter;
+    }
+  }
+}
