@@ -14,7 +14,7 @@ $is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !defau
 $is-error:    unquote('&.is-error') !default;
 $is-success:  unquote('&.is-success') !default;
 
-@mixin link (
+@mixin sf-link (
   $color-normal,
   $color-hover: null,
   $color-focus: null,
@@ -147,6 +147,6 @@ $is-success:  unquote('&.is-success') !default;
   }
 };
 
-@mixin link--pseudo () {
+@mixin sf-link--pseudo () {
   border-style: dashed;
 }
