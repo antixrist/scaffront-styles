@@ -89,19 +89,53 @@ $is-success:  unquote('&.is-success') !default;
 
 @mixin sf-input--variant (
   $color-normal:        $base-color,
-  $color-hover:         $color-normal,
-  $color-focus:         $color-hover,
-  $color-active:        $color-hover,
+  $color-hover:         null,
+  $color-focus:         null,
+  $color-active:        null,
   $color-bg-normal:     #fff,
-  $color-bg-hover:      $color-bg-normal,
-  $color-bg-focus:      $color-bg-normal,
-  $color-bg-active:     $color-bg-normal,
+  $color-bg-hover:      null,
+  $color-bg-focus:      null,
+  $color-bg-active:     null,
   $color-border-normal: #ccc,
-  $color-border-hover:  darken($color-border-normal,10%),
+  $color-border-hover:  darken($color-border-normal, 10%),
   $color-border-focus:  darken($color-border-normal, 20%),
   $color-border-active: darken($color-border-normal, 20%),
-  $border-radius: 3px
+  $border-radius:       none
 ) {
+  @if (is-null($color-hover)) {
+    $color-hover: $color-normal;
+  }
+  @if (is-null($color-focus)) {
+    $color-focus: $color-hover;
+  }
+  @if (is-null($color-active)) {
+    $color-active: $color-hover;
+  }
+  @if (is-null($color-bg-normal)) {
+    $color-bg-normal: #fff;
+  }
+  @if (is-null($color-bg-hover)) {
+    $color-bg-hover: $color-bg-normal;
+  }
+  @if (is-null($color-bg-focus)) {
+    $color-bg-focus: $color-bg-hover;
+  }
+  @if (is-null($color-bg-active)) {
+    $color-bg-active: $color-bg-hover;
+  }
+  @if (is-null($color-border-normal)) {
+    $color-border-normal: #ccc;
+  }
+  @if (is-null($color-border-hover)) {
+    $color-border-hover: darken($color-border-normal, 10%);
+  }
+  @if (is-null($color-border-focus)) {
+    $color-border-focus: darken($color-border-hover, 20%);
+  }
+  @if (is-null($color-border-active)) {
+    $color-border-active: darken($color-border-focus, 20%);
+  }
+
   color: $color-normal !important;
   border-color: $color-border-normal;
   border-radius: $border-radius;

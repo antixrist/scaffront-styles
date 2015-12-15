@@ -7,6 +7,14 @@
 @import 'sassdash';
 @import 'sassy-validation';
 
+@function sf-default ($val, $default: null) {
+  @if (is-null($val)) {
+    @return $default;
+  }
+
+  @return $val;
+}
+
 @function sf-trim ($string) {
   $result: $string;
   @if (type-of($string) == list) {

@@ -4,6 +4,7 @@
 
 $base-font-size:    14px !default;
 $base-line-height:  24px !default;
+$base-color:        #3b3b3b !default;
 
 $is-hovered:  unquote('&:hover, &.is-hovered') !default;
 $is-focused:  unquote('&:focus, &.is-focused') !default;
@@ -103,9 +104,6 @@ $is-success:  unquote('&.is-success') !default;
       $padding-top:     map-get($styles, padding-top);
       $padding-bottom:  map-get($styles, padding-bottom);
 
-      @debug($padding-top + $active-offset);
-      @debug($padding-bottom - $active-offset);
-
       padding-top: $padding-top + $active-offset;
       padding-bottom: $padding-bottom - $active-offset;
     } @elseif ($active-type == outer) {
@@ -122,7 +120,7 @@ $is-success:  unquote('&.is-success') !default;
 }
 
 @mixin sf-btn--variant (
-  $color-normal,
+  $color-normal:        $base-color,
   $color-hover:         null,
   $color-focus:         null,
   $color-active:        null,
