@@ -79,8 +79,7 @@ $base-gutter: $base-font-size !default;
 
 a.logo, .logo a {
   @include sf-no-border($important: true);
-
-  display: inline-block;
+  //display: inline-block;
 
   img {
     display: block;
