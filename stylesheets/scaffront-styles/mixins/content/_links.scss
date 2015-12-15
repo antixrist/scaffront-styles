@@ -14,6 +14,17 @@ $is-disabled: unquote('&.is-disabled, &[disabled], fieldset[disabled] &') !defau
 $is-error:    unquote('&.is-error') !default;
 $is-success:  unquote('&.is-success') !default;
 
+@mixin sf-unlink () {
+  &,
+  #{$is-hovered},
+  #{$is-focused},
+  #{$is-active},
+  #{$is-visited} {
+    text-decoration: none;
+    border: none;
+  }
+}
+
 @mixin sf-link (
   $color-normal,
   $color-hover: null,
@@ -30,8 +41,13 @@ $is-success:  unquote('&.is-success') !default;
   $border-width-focus: null,
   $border-width-active: null,
   $border-width-visited: null,
-  $transition: null
+  $transition: null,
+  $target-inner-selector: null
 ) {
+  @include sf-unlink();
+
+  $selector: if(is-string($target-inner-selector), $target-inner-selector, '');
+
   // Defaults
   @if (is-null($color-hover)) {
     //$color-hover: darken($color-normal, 20%);
@@ -79,61 +95,78 @@ $is-success:  unquote('&.is-success') !default;
   @if (is-null($border-width-visited)) {
     $border-width-visited: $border-width-normal;
   }
-
   @if (is-null($transition)) {
     $transition: .2s ease-out;
   }
 
-  cursor: pointer;
-  text-decoration : none;
-  border-style: solid;
+
+  & #{$selector} {
+    cursor: pointer;
+    text-decoration : none;
+    border-style: solid;
+  }
+
 
   @if ($transition) {
-    transition: color $transition, border-width $transition, border-color $transition;
+    & #{$selector} {
+      transition: color $transition, border-width $transition, border-color $transition;
+    }
   }
 
-
-  @include link-colors($color-normal, $color-hover, $color-active, $color-visited, $color-focus);
-
-  border-color: $border-color-normal;
-  border-width: $border-width-normal;
-
-  #{$is-visited} {
-    color: $color-visited;
-    border-color: $border-color-visited;
-    border-width: $border-width-visited;
+  & #{$selector} {
+    color: $color-normal;
+    border-color: $border-color-normal;
+    border-width: $border-width-normal;
   }
+
+  //#{$is-visited} {
+  //  & #{$selector} {
+  //    color: $color-visited;
+  //    border-color: $border-color-visited;
+  //    border-width: $border-width-visited;
+  //  }
+  //}
   #{$is-hovered} {
-    color: $color-hover;
-    border-color: $border-color-hover;
-    border-width: $border-width-hover;
-
-    #{$is-focused} {
-      @include sf-unfocus();
-
+    & #{$selector} {
       color: $color-hover;
       border-color: $border-color-hover;
       border-width: $border-width-hover;
+
+    }
+    #{$is-focused} {
+      @include sf-unfocus();
+
+      & #{$selector} {
+        color: $color-hover;
+        border-color: $border-color-hover;
+        border-width: $border-width-hover;
+      }
     }
   }
   #{$is-focused} {
     @include sf-focus();
 
-    color: $color-focus;
-    border-color: $border-color-focus;
-    border-width: $border-width-focus;
+    & #{$selector} {
+      color: $color-focus;
+      border-color: $border-color-focus;
+      border-width: $border-width-focus;
+    }
   }
   #{$is-active} {
-    color: $color-active;
-    border-color: $border-color-active;
-    border-width: $border-width-active;
+    & #{$selector} {
+      color: $color-active;
+      border-color: $border-color-active;
+      border-width: $border-width-active;
+    }
 
     #{$is-focused} {
       @include sf-unfocus();
 
-      color: $color-active;
-      border-color: $border-color-active;
-      border-width: $border-width-active;
+      & #{$selector} {
+        color: $color-active;
+        border-color: $border-color-active;
+        border-width: $border-width-active;
+      }
     }
 
     // #{$hovered} {
@@ -142,8 +175,10 @@ $is-success:  unquote('&.is-success') !default;
   }
 
   .no-rgba & {
-    border: none;
-    text-decoration: underline;
+    & #{$selector} {
+      border: none;
+      text-decoration: underline;
+    }
   }
 };
 

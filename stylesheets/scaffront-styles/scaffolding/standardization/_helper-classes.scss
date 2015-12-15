@@ -80,6 +80,8 @@ $base-gutter: $base-font-size !default;
 a.logo, .logo a {
   @include sf-no-border($important: true);
 
+  display: inline-block;
+
   img {
     display: block;
     @include sf-no-border($important: true);
@@ -90,3 +92,11 @@ a.logo, .logo a {
   white-space: nowrap;
 }
 
+.asides {
+  @include sf-asides(
+    $selector-aside-left: '.asides__left',
+    $selector-aside-right: '.asides__right',
+    $selector-aside-center: '.asides__center',
+    $gutter: $base-gutter
+  );
+}

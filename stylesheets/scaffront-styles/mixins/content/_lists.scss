@@ -2,11 +2,22 @@
 //    Framework/Mixins/Content/Lists
 //*********************************************
 
-@mixin unlist () {
+@mixin unlist ($selector: '> li') {
   list-style: none;
   margin: 0;
   padding: 0;
   background: none;
+  display: block;
+
+  @if (is-string($selector)) {
+    $selector: unquote($selector);
+
+    #{$selector} {
+      margin: 0;
+      padding: 0;
+      background: none;
+    }
+  }
 }
 
 @mixin unlist-item () {

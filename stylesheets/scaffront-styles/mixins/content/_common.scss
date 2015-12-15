@@ -324,8 +324,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     top right bottom left,
     $positions,
-    $defaults: (top: auto, right: auto, bottom: auto, left: auto),
-    $exclude-values: null auto
+  $defaults: (top: auto, right: auto, bottom: auto, left: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -336,8 +336,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     margin-left margin-right,
     $margins,
-    $defaults: (margin-left: auto, margin-right: auto),
-    $exclude-values: null auto
+  $defaults: (margin-left: auto, margin-right: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -348,8 +348,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     margin-top margin-bottom,
     $margins,
-    $defaults: (margin-top: auto, margin-bottom: auto),
-    $exclude-values: null auto
+  $defaults: (margin-top: auto, margin-bottom: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -360,8 +360,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     margin-top margin-right margin-bottom margin-left,
     $margins,
-    $defaults: (margin-top: auto, margin-right: auto, margin-bottom: auto, margin-left: auto),
-    $exclude-values: null auto
+  $defaults: (margin-top: auto, margin-right: auto, margin-bottom: auto, margin-left: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -372,8 +372,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     padding-left padding-right,
     $paddings,
-    $defaults: (padding-left: auto, padding-right: auto),
-    $exclude-values: null auto
+  $defaults: (padding-left: auto, padding-right: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -384,8 +384,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     padding-top padding-bottom,
     $paddings,
-    $defaults: (padding-top: auto, padding-bottom: auto),
-    $exclude-values: null auto
+  $defaults: (padding-top: auto, padding-bottom: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -396,8 +396,8 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     padding-top padding-right padding-bottom padding-left,
     $paddings,
-    $defaults: (padding-top: auto, padding-right: auto, padding-bottom: auto, padding-left: auto),
-    $exclude-values: null auto
+  $defaults: (padding-top: auto, padding-right: auto, padding-bottom: auto, padding-left: auto),
+  $exclude-values: null auto
   );
 }
 
@@ -407,9 +407,31 @@ $_preload-image-urls:     () !default;
   @include sf-styles(
     width height,
     $size,
-    $defaults: (width: auto, height: auto),
-    $exclude-values: null auto
+  $defaults: (width: auto, height: auto),
+  $exclude-values: null auto
   );
 }
 
 @mixin sf-sizes ($args...) { @include sf-size($args...); }
+
+@mixin sf-content-gutter-x ($gutter, $direction: top, $selector: '> *') {
+  $selector: if(is-string($selector), unquote($selector), null);
+  $selector: if(not is-null($selector) and $selector != '', $selector, null);
+
+  $direction: if(is-string($direction), unquote($direction), '');
+  $direction: if($direction != top and $direction != bottom, top, $direction);
+
+  @if (not is-measure($gutter)) {
+    $gutter: if(is-number($gutter), $gutter *1px, null);
+  }
+
+  @if ($gutter and $selector) {
+    & #{$selector} {
+      margin-#{$direction}: $gutter;
+
+      &:first-child {
+        margin-#{$direction}: 0;
+      }
+    }
+  }
+}
