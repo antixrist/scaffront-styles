@@ -82,7 +82,6 @@ $is-success:  unquote('&.is-success') !default;
   $line-height:           $base-line-height,
   $border-width:          1px,
   $padding:               5px 10px,
-  //$lines:                 1,
   $active-offset:         1px,
   $active-offset-type:    inner // inner/outer/false
 ) {
@@ -104,13 +103,11 @@ $is-success:  unquote('&.is-success') !default;
       $padding-top:     map-get($styles, padding-top);
       $padding-bottom:  map-get($styles, padding-bottom);
 
-      @if (($padding-top + $active-offset) > 0) {
-        padding-top:    map-get($styles, padding-top)    + $active-offset;
-      }
+      @debug($padding-top + $active-offset);
+      @debug($padding-bottom - $active-offset);
 
-      @if (($padding-bottom - $active-offset) > 0) {
-        padding-bottom: map-get($styles, padding-bottom) + $active-offset;
-      }
+      padding-top: $padding-top + $active-offset;
+      padding-bottom: $padding-bottom - $active-offset;
     } @elseif ($active-type == outer) {
       position: relative;
       top: $active-offset;
@@ -125,20 +122,60 @@ $is-success:  unquote('&.is-success') !default;
 }
 
 @mixin sf-btn--variant (
-  $color-normal:        #fff,
-  $color-hover:         $color-normal,
-  $color-focus:         $color-hover,
-  $color-active:        $color-normal,
-  $color-bg-normal:     (#ffd15c, #ffd15c, #fdc636, #fdc636, #fcb809, #fe6b03),
-  $color-bg-hover:      (#feea5c, #fdd936, #fdca09, #fdca09, #fd8905, #ffba04),
-  $color-bg-focus:      $color-bg-hover,
-  $color-bg-active:     (#fe9457, #fe9457, #fe7f31, #fe7f31, #fe6403, #fcb008),
+  $color-normal,
+  $color-hover:         null,
+  $color-focus:         null,
+  $color-active:        null,
+  $color-bg-normal:     #ccc,
+  $color-bg-hover:      null,
+  $color-bg-focus:      null,
+  $color-bg-active:     null,
   $color-border-normal: transparent,
-  $color-border-hover:  $color-border-normal,
-  $color-border-focus:  $color-border-normal,
-  $color-border-active: $color-border-normal,
-  $border-radius:       4px
+  $color-border-hover:  null,
+  $color-border-focus:  null,
+  $color-border-active: null,
+  $border-radius:       none
 ) {
+  @if (is-null($color-hover)) {
+    $color-hover: $color-normal;
+  }
+  @if (is-null($color-focus)) {
+    $color-focus: $color-hover;
+  }
+  @if (is-null($color-active)) {
+    $color-active: $color-hover;
+  }
+  @if (is-null($color-bg-normal)) {
+    $color-bg-normal: #ccc;
+  }
+  @if (is-null($color-bg-hover)) {
+    $color-bg-hover: $color-bg-normal;
+  }
+  @if (is-null($color-bg-focus)) {
+    $color-bg-focus: $color-bg-hover;
+  }
+  @if (is-null($color-bg-active)) {
+    $color-bg-active: $color-bg-hover;
+  }
+  @if (is-null($color-border-normal)) {
+    $color-border-normal: transparent;
+  }
+  @if (is-null($color-border-hover)) {
+    $color-border-hover: lighten($color-border-normal, 2%);
+  }
+  @if (is-null($color-border-focus)) {
+    $color-border-focus: $color-border-hover;
+  }
+  @if (is-null($color-border-active)) {
+    @if (is-color($color-border-normal)) {
+      // если пришёл обычный цвет, то затемним его.
+      $color-border-active: darken($color-border-normal, 2%);
+    } @else {
+      // если пришло что-то другое, то уйдёт в соответствующий миксин и там обработается
+      $color-border-active: $color-border-normal;
+    }
+  }
+
   color: $color-normal !important;
   border-color: $color-border-normal;
   border-radius: $border-radius;
@@ -169,8 +206,8 @@ $is-success:  unquote('&.is-success') !default;
   }
 
   #{$is-hovered} {
-    &,
-    #{$is-focused} & {
+    //&,
+    //#{$is-focused} & {
       color: $color-hover !important;
       border-color: $color-border-hover;
 
@@ -183,7 +220,7 @@ $is-success:  unquote('&.is-success') !default;
           $background: transparent
         );
       }
-    }
+    //}
   }
 
   #{$is-active} {

@@ -33,54 +33,54 @@ $is-success:  unquote('&.is-success') !default;
   $transition: null
 ) {
   // Defaults
-  @if ($color-hover == null) {
+  @if (is-null($color-hover)) {
     //$color-hover: darken($color-normal, 20%);
     $color-hover: $color-normal;
   }
-  @if ($color-focus == null) {
+  @if (is-null($color-focus)) {
     $color-focus: $color-hover;
   }
-  @if ($color-active == null) {
+  @if (is-null($color-active)) {
     $color-active: #ff0000;
   }
-  @if ($color-visited == null) {
+  @if (is-null($color-visited)) {
     $color-visited: $color-normal;
   }
 
-  @if ($border-color-normal == null) {
+  @if (is-null($border-color-normal)) {
     $border-color-normal: rgba($color-normal, .6);
   }
 
-  @if ($border-color-hover == null) {
+  @if (is-null($border-color-hover)) {
     $border-color-hover: $color-hover;
   }
-  @if ($border-color-focus == null) {
+  @if (is-null($border-color-focus)) {
     $border-color-focus: $color-focus;
   }
-  @if ($border-color-active == null) {
+  @if (is-null($border-color-active)) {
     $border-color-active: $color-active;
   }
-  @if ($border-color-visited == null) {
+  @if (is-null($border-color-visited)) {
     $border-color-visited: $color-visited;
   }
 
-  @if ($border-width-normal == null) {
+  @if (is-null($border-width-normal)) {
     $border-width-normal: 0 0 1px 0;
   }
-  @if ($border-width-hover == null) {
+  @if (is-null($border-width-hover)) {
     $border-width-hover: $border-width-normal;
   }
-  @if ($border-width-focus == null) {
+  @if (is-null($border-width-focus)) {
     $border-width-focus: $border-width-normal;
   }
-  @if ($border-width-active == null) {
+  @if (is-null($border-width-active)) {
     $border-width-active: $border-width-normal;
   }
-  @if ($border-width-visited == null) {
+  @if (is-null($border-width-visited)) {
     $border-width-visited: $border-width-normal;
   }
 
-  @if ($transition == null) {
+  @if (is-null($transition)) {
     $transition: .2s ease-out;
   }
 

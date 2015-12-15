@@ -35,7 +35,7 @@ $base-gutter: $base-font-size !default;
   // Default
   outline: thin dotted $important;
   // WebKit
-  outline: 5px auto -webkit-focus-ring-color $important;
+  //outline: 5px auto -webkit-focus-ring-color $important;
   outline-offset: -2px $important;
 }
 
