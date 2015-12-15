@@ -72,6 +72,12 @@ $is-success:  unquote('&.is-success') !default;
   );
 
   @include sf-styles($styles, $exclude-values: null auto);
+
+  @at-root {
+    textarea {
+      height: auto !important;
+    }
+  }
 }
 
 @mixin sf-input--block () {

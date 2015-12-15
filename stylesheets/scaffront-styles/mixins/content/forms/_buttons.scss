@@ -147,31 +147,31 @@ $is-success:  unquote('&.is-success') !default;
     $color-bg-normal: #ccc;
   }
   @if (is-null($color-bg-hover)) {
-    $color-bg-hover: $color-bg-normal;
+    $color-bg-hover: lighten($color-bg-normal, 2%);
   }
   @if (is-null($color-bg-focus)) {
     $color-bg-focus: $color-bg-hover;
   }
   @if (is-null($color-bg-active)) {
-    $color-bg-active: $color-bg-hover;
+    @if (is-color($color-bg-normal)) {
+      // если пришёл обычный цвет, то затемним его.
+      $color-bg-active: darken($color-bg-normal, 2%);
+    } @else {
+      // если пришло что-то другое, то уйдёт в соответствующий миксин и там обработается
+      $color-bg-active: $color-bg-normal;
+    }
   }
   @if (is-null($color-border-normal)) {
     $color-border-normal: transparent;
   }
   @if (is-null($color-border-hover)) {
-    $color-border-hover: lighten($color-border-normal, 2%);
+    $color-border-hover: $color-border-normal;
   }
   @if (is-null($color-border-focus)) {
     $color-border-focus: $color-border-hover;
   }
   @if (is-null($color-border-active)) {
-    @if (is-color($color-border-normal)) {
-      // если пришёл обычный цвет, то затемним его.
-      $color-border-active: darken($color-border-normal, 2%);
-    } @else {
-      // если пришло что-то другое, то уйдёт в соответствующий миксин и там обработается
-      $color-border-active: $color-border-normal;
-    }
+    $color-border-active: $color-border-hover;
   }
 
   color: $color-normal !important;
