@@ -137,12 +137,12 @@
 }
 
 @function sf-important ($important: false) {
-  $important: '';
+  $imp: '';
   @if (sf-is-true($important)) {
     $imp: '!important';
   }
 
-  @return unquote($important);
+  @return unquote($imp);
 }
 
 @function is-zero ($var) {
