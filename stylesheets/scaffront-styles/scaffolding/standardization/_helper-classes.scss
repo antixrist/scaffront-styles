@@ -54,7 +54,7 @@ $base-gutter: $base-font-size !default;
 .block {
   @include sf-block($important: true);
 }
-.block-center {
+.center-block {
   @include sf-block-center();
 }
 

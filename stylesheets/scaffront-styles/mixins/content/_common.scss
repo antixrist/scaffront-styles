@@ -220,9 +220,10 @@ $base-gutter: $base-font-size !default;
 }
 
 @mixin sf-hidden-text {
-  font: 0/0 a;
   color: transparent;
   text-shadow: none;
+  background-color: transparent;
+  border: 0;
 }
 
 /*
