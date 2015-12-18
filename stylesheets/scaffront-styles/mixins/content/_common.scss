@@ -428,6 +428,7 @@ $_preload-image-urls:     () !default;
 
   @if ($gutter and $selector) {
     & #{$selector} {
+      #{$type}-bottom: 0;
       #{$type}-top: $gutter;
 
       &:first-child {
