@@ -44,7 +44,8 @@ $is-success:  unquote('&.is-success') !default;
   $transition: null,
   $target-inner-selector: null
 ) {
-  @include sf-unlink();
+  text-decoration: none;
+  border: none;
 
   $selector: if(is-string($target-inner-selector), $target-inner-selector, '');
 
