@@ -39,6 +39,7 @@
     "modernizr-mixin": "~3.0.7",
     "css-hamburgers": "~0.3.0",
     "colors": "git://github.com/mrmrs/colors.git",
+    "card": "*",
     "hint.css": "*"
   }
 }
